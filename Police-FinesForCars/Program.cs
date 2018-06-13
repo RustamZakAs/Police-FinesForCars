@@ -11,7 +11,10 @@ namespace Police_FinesForCars
         {
 
         }
+        static void MainMenyu ()
+        {
 
+        }
         
 
     }
