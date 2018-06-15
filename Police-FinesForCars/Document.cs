@@ -2,12 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 
 namespace Police_FinesForCars
 {
-    internal class Document : Persons
+    [DataContract]
+    class Person
     {
-        public string RegistrationMark { get; set; }
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public string Surname { get; set; }
+        [DataMember]
+        public string Patronime { get; set; }
+        [DataMember]
+        public DateTime BirtDay { get; set; }
+        [DataMember]
+        public string PlaceOfBirth{ get; set; }
+        public override string ToString()
+        {
+            return $"{Name} {Surname} {Patronime} {BirtDay} {PlaceOfBirth}";
+        }
+    }
+    [DataContract]
+    class RegistrationMark
+    {
+        [DataMember]
+        public string Seriya { get; set; }
+        [DataMember]
+        public string Number { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Seriya}{Number}";
+        }
+    }
+    [DataContract]
+    internal class Document : Person
+    {
+        [DataMember]
+        public string DocType { get; set; }
+        [DataMember]
+        public RegistrationMark RegistrationKod { get;}
 
         public Document()
         {
@@ -21,18 +59,19 @@ namespace Police_FinesForCars
 
         public Document(Document doc)
         {
-            string name = doc.Name;
-            string surname = doc.Surname;
-            string patronime = doc.Patronime;
-            DateTime birtday = doc.Birtday;
-            string registrationMark = doc.RegistrationMark;
+            Name = doc.Name;
+            Surname = doc.Surname;
+            Patronime = doc.Patronime;
+            BirtDay = doc.BirtDay;
+            RegistrationKod.Seriya = doc.RegistrationKod.Seriya;
+            RegistrationKod.Number = doc.RegistrationKod.Number;
         }
-        public Document(Persons per)
+        public Document(Person per)
         {
-            string name = per.Name;
-            string surname = per.Surname;
-            string patronime = per.Patronime;
-            DateTime birtday = per.Birtday;
+            Name = per.Name;
+            Surname = per.Surname;
+            Patronime = per.Patronime;
+            BirtDay = per.BirtDay;
         }
     }
 }
