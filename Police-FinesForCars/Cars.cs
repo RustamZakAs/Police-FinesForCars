@@ -7,10 +7,12 @@ using System.Text;
 namespace Police_FinesForCars
 {
     [DataContract]
-    class Cars
+    public class Cars
     {
         [DataMember]
         public string Model { get; set; }
+        [DataMember]
+        public string Marka { get; set; }
         [DataMember]
         public string Make { get; set; }
         [DataMember]
@@ -22,15 +24,16 @@ namespace Police_FinesForCars
         [DataMember]
         public int Seats { get; set; }         //Количество сидячих мест
         [DataMember]
-        public int BodyNumber { get; set; }    //Номер кузова
+        public string BodyNumber { get; set; }    //Номер кузова
         [DataMember]
-        public int EngineNumber { get; set; }  //Номер двигателя
+        public string EngineNumber { get; set; }  //Номер двигателя
 
         public Cars()
         {
+
         }
 
-        public Cars(string model, string make, string carType, int year, int doors, int seats, int bodyNumber, int engineNumber)
+        public Cars(string model, string make, string carType, int year, int doors, int seats, string bodyNumber, string engineNumber)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
             Make = make ?? throw new ArgumentNullException(nameof(make));
@@ -42,12 +45,27 @@ namespace Police_FinesForCars
             EngineNumber = engineNumber;
         }
 
-        void AddCar()
+        public void AddCar()
         {
             Console.WriteLine("Please Insert Car Information");
             Console.WriteLine("Model: ");
-            Model = Console.ReadLine(); 
-
+            Model = Console.ReadLine();
+            Console.WriteLine("Marka: ");
+            Marka = Console.ReadLine();
+            Console.WriteLine("İstehsalçı ölkə: ");
+            Make = Console.ReadLine();
+            Console.WriteLine("Növü: ");
+            CarType = Console.ReadLine();
+            Console.WriteLine("İli: ");
+            Year = int.Parse(Console.ReadLine());
+            Console.WriteLine("Qapıların sayı: ");
+            Doors = int.Parse(Console.ReadLine());
+            Console.WriteLine("Qapıların sayı: ");
+            Seats = int.Parse(Console.ReadLine());
+            Console.WriteLine("Qapıların sayı: ");
+            BodyNumber = Console.ReadLine();
+            Console.WriteLine("Qapıların sayı: ");
+            EngineNumber = Console.ReadLine();
         }
 
     }
