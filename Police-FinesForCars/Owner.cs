@@ -9,6 +9,9 @@ namespace Police_FinesForCars
     [DataContract]
     class Owner
     {
+        public Owner()
+        {
+        }
 
         [DataMember]
         public Document[] MyDocuments { get; set; }

@@ -40,7 +40,7 @@ namespace Police_FinesForCars
         }
     }
     [DataContract]
-    internal class Document : Person
+    class Document : Person
     {
         [DataMember]
         public string DocType { get; set; }

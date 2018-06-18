@@ -10,9 +10,15 @@ namespace Police_FinesForCars
 {
     class Program
     {
+        public static int staticLanguage = (int)Lang.RU;
         //public static List<Person> people = new List<Person>();
         //public static List<RegistrationMark> regKods = new List<RegistrationMark>();
         //public static List<Document> docs = new List<Document>();
+
+        public static Dictionary<string, RZLanguage> dictionary = new Dictionary<string, RZLanguage>();
+        public static RZLanguage Lanl = new RZLanguage();
+        
+
 
         public static Person person = new Person();
         public static Document document = new Document();
@@ -22,14 +28,17 @@ namespace Police_FinesForCars
 
         static void Main(string[] args)
         {
+            Lanl.CreateDictionary(ref dictionary);
+            Person per = (Person)ReadAll(new Person(), "people");
+
             MainMenyu();
         }
         static void MainMenyu ()
         {
-            Console.WriteLine("1. Yeni şəxs   ");
-            Console.WriteLine("2. Yeni maşın  ");
-            Console.WriteLine("3. Yeni sənəd  ");
-            Console.WriteLine("4. Yeni cərimə ");
+            Console.WriteLine($"1. {dictionary["menyu 1"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"2. {dictionary["menyu 2"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"3. {dictionary["menyu 3"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"4. {dictionary["menyu 4"].RetLang(staticLanguage)} ");
 
             ConsoleKeyInfo cki = Console.ReadKey();
             if (cki.KeyChar == '1')
@@ -43,7 +52,12 @@ namespace Police_FinesForCars
                 person.Patronime = Console.ReadLine();
                 Console.WriteLine("Doğum tarixi: ");
                 string birt = Console.ReadLine();
-                person.BirtDay = DateTime.Parse(birt);
+                if (DateTime.TryParse(birt, out DateTime bdate))
+                {
+                    person.BirtDay = bdate;
+                } else person.BirtDay = DateTime.Parse("01.01.1900");
+                Console.WriteLine("Doğum yeri: ");
+                person.PlaceOfBirth = Console.ReadLine();
             }
             else if (cki.KeyChar == '2')
             {
@@ -63,7 +77,6 @@ namespace Police_FinesForCars
             else if (cki.KeyChar == '4')
             {
                 Console.WriteLine("Yeni cərimə əlavə et: ");
-
             }
             else MainMenyu();
 
@@ -79,6 +92,10 @@ namespace Police_FinesForCars
         }
         static public void SaveAll(object obj, string fileName)
         {
+            if (File.Exists($"{fileName}.json"))
+            {
+                File.Delete($"{fileName}.json");
+            }
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(obj.GetType());
 
             using (FileStream fs = new FileStream($"{fileName}.json", FileMode.OpenOrCreate))
