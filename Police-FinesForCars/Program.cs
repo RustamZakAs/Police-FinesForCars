@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -18,13 +18,13 @@ namespace Police_FinesForCars
         public static Dictionary<string, RZLanguage> dictionary = new Dictionary<string, RZLanguage>();
         public static RZLanguage Lanl = new RZLanguage();
         
-
-
         public static Person person = new Person();
         public static Document document = new Document();
         public static Fines fines = new Fines();
         public static RegistrationMark docRegKod = new RegistrationMark();
         public static Cars car = new Cars();
+
+        public static List<Owner> owners = new List<Owner>();
 
         //static int a = 6;
 
@@ -40,29 +40,17 @@ namespace Police_FinesForCars
         }
         static void MainMenyu ()
         {
-            Console.WriteLine($"1. {dictionary["menyu 1"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"2. {dictionary["menyu 2"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"3. {dictionary["menyu 3"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"4. {dictionary["menyu 4"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"4. {dictionary["newfine"].RetLang(staticLanguage)} ");
+            Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
 
             ConsoleKeyInfo cki = Console.ReadKey();
             if (cki.KeyChar == '1')
             {
-                Console.WriteLine("Yeni şəxs əlavə et: ");
-                Console.WriteLine("Adı: ");
-                person.Name = Console.ReadLine();
-                Console.WriteLine("Soyadı: ");
-                person.Surname = Console.ReadLine();
-                Console.WriteLine("Ata adı: ");
-                person.Patronime = Console.ReadLine();
-                Console.WriteLine("Doğum tarixi: ");
-                string birt = Console.ReadLine();
-                if (DateTime.TryParse(birt, out DateTime bdate))
-                {
-                    person.BirtDay = bdate;
-                } else person.BirtDay = DateTime.Parse("01.01.1900");
-                Console.WriteLine("Doğum yeri: ");
-                person.PlaceOfBirth = Console.ReadLine();
+                person.AddPerson();
+                document.Add(person);
             }
             else if (cki.KeyChar == '2')
             {
@@ -83,17 +71,24 @@ namespace Police_FinesForCars
             {
                 Console.WriteLine("Yeni cərimə əlavə et: ");
             }
+            else if (cki.KeyChar == '5')
+            {
+                Console.WriteLine("Hamısına baxma: ");
+                Person per = (Person)ReadAll(new Person(), "people");
+                Console.WriteLine(per);
+                Console.ReadKey();
+            }
             else MainMenyu();
 
+            Owner owner = new Owner();
 
+            Document xdocument = new Document(person);
+
+            owners.Add(owner);
 
             Console.ReadKey();
             //people.Add(person);
             SaveAll(person, "people");
-
-            Person per = (Person)ReadAll(new Person(), "people");
-            Console.WriteLine(per);
-            Console.ReadKey();
         }
         static public void SaveAll(object obj, string fileName)
         {

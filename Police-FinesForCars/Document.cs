@@ -25,6 +25,25 @@ namespace Police_FinesForCars
         {
             return $"{Name} {Surname} {Patronime} {BirtDay} {PlaceOfBirth}";
         }
+        public void AddPerson ()
+        {
+            Console.WriteLine("Yeni şəxs əlavə et: ");
+            Console.WriteLine("Adı: ");
+            Name = Console.ReadLine();
+            Console.WriteLine("Soyadı: ");
+            Surname = Console.ReadLine();
+            Console.WriteLine("Ata adı: ");
+            Patronime = Console.ReadLine();
+            Console.WriteLine("Doğum tarixi: ");
+            string birt = Console.ReadLine();
+            if (DateTime.TryParse(birt, out DateTime bdate))
+            {
+                BirtDay = bdate;
+            }
+            else BirtDay = DateTime.Parse("01.01.1900");
+            Console.WriteLine("Doğum yeri: ");
+            PlaceOfBirth = Console.ReadLine();
+        }
     }
     [DataContract]
     class RegistrationMark
@@ -67,6 +86,13 @@ namespace Police_FinesForCars
             RegistrationKod.Number = doc.RegistrationKod.Number;
         }
         public Document(Person per)
+        {
+            Name = per.Name;
+            Surname = per.Surname;
+            Patronime = per.Patronime;
+            BirtDay = per.BirtDay;
+        }
+        public void Add(Person per)
         {
             Name = per.Name;
             Surname = per.Surname;
