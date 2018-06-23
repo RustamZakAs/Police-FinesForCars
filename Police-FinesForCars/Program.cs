@@ -26,11 +26,16 @@ namespace Police_FinesForCars
         public static RegistrationMark docRegKod = new RegistrationMark();
         public static Cars car = new Cars();
 
+        //static int a = 6;
+
         static void Main(string[] args)
         {
+            //int a = 5;
+            //Console.WriteLine($"{Program.a} and {a}");
+
             Lanl.CreateDictionary(ref dictionary);
             Person per = (Person)ReadAll(new Person(), "people");
-
+            
             MainMenyu();
         }
         static void MainMenyu ()

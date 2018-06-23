@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>281794-200.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,7 +54,7 @@
     <Compile Include="Cars.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="281794-200.ico" />
+    <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
