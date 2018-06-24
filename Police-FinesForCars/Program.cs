@@ -34,7 +34,7 @@ namespace Police_FinesForCars
             //Console.WriteLine($"{Program.a} and {a}");
 
             Lanl.CreateDictionary(ref dictionary);
-            Person per = (Person)ReadAll(new Person(), "people");
+            owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
             
             MainMenyu();
         }
@@ -74,21 +74,26 @@ namespace Police_FinesForCars
             else if (cki.KeyChar == '5')
             {
                 Console.WriteLine("Hamısına baxma: ");
-                Person per = (Person)ReadAll(new Person(), "people");
-                Console.WriteLine(per);
+                owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                Console.WriteLine(owners);
                 Console.ReadKey();
             }
             else MainMenyu();
 
             Owner owner = new Owner();
-
             Document xdocument = new Document(person);
-
+            Console.WriteLine(owner.MyDocuments.Length);
+            owner.MyDocuments[owner.MyDocuments.Length] = xdocument;
+            //Console.WriteLine(owner.MyDocuments.Length);
+            //owner.GetMyCars()[owner.GetMyCars().Length - 1] = car;
+            //owner.GetMyFines()[owner.GetMyFines().Length - 1] = fines;
+            Console.WriteLine(value: owner);
             owners.Add(owner);
 
             Console.ReadKey();
             //people.Add(person);
-            SaveAll(person, "people");
+            if (owners.Count > 0)
+            SaveAll(owners, "people");
         }
         static public void SaveAll(object obj, string fileName)
         {
@@ -106,14 +111,22 @@ namespace Police_FinesForCars
         static public object ReadAll(object objectType, string fileName)
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(objectType.GetType());
-
             object newpeople;
-
-            using (FileStream fs = new FileStream($"{fileName}.json", FileMode.OpenOrCreate))
+            try
             {
-                newpeople = jsonFormatter.ReadObject(fs);
+                using (FileStream fs = new FileStream($"{fileName}.json", FileMode.OpenOrCreate))
+                {
+                    if (fs.Length > 0)
+                        newpeople = jsonFormatter.ReadObject(fs);
+                    else return new List<Owner>(); //--error if "new object()"
+                }
+                return newpeople;
             }
-            return newpeople;
+            catch (Exception ew)
+            {
+                Console.WriteLine(ew);
+                throw;
+            }
         }
     }
 }
