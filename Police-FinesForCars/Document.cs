@@ -27,7 +27,6 @@ namespace Police_FinesForCars
         }
         public void AddPerson ()
         {
-            Console.WriteLine("Yeni şəxs əlavə et: ");
             Console.WriteLine("Adı: ");
             Name = Console.ReadLine();
             Console.WriteLine("Soyadı: ");
@@ -55,7 +54,7 @@ namespace Police_FinesForCars
 
         public override string ToString()
         {
-            return $"{Seriya}{Number}";
+            return $"{Seriya} {Number}";
         }
     }
     [DataContract]
@@ -98,6 +97,10 @@ namespace Police_FinesForCars
             Surname = per.Surname;
             Patronime = per.Patronime;
             BirtDay = per.BirtDay;
+        }
+        public override string ToString()
+        {
+            return $"{DocType} {RegistrationKod}";
         }
     }
 }

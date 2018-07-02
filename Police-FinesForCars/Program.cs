@@ -40,6 +40,10 @@ namespace Police_FinesForCars
         }
         static void MainMenyu ()
         {
+            Console.Title = "Cərimələr";
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding  = Encoding.Unicode;
+
             Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
             Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
             Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
@@ -49,11 +53,53 @@ namespace Police_FinesForCars
             ConsoleKeyInfo cki = Console.ReadKey();
             if (cki.KeyChar == '1')
             {
+                Console.WriteLine("Yeni şəxs əlavə et: ");
                 person.AddPerson();
-                document.Add(person);
+                Person per = new Person();
+                per = person;
+                document.Add(per);
+                Console.WriteLine(per);
             }
             else if (cki.KeyChar == '2')
             {
+                if (owners.Count == 0)
+                {
+                    Console.WriteLine("Yeni şəxs əlavə et: ");
+                    person.AddPerson();
+                    Person per = new Person();
+                    per = person;
+                    document.Add(per);
+                    Console.WriteLine(per);
+                }
+                else
+                {
+                    string insert_name;
+                    string insert_surname;
+                    string insert_patronime;
+
+                    do
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
+                        insert_name = Console.ReadLine();
+                        Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
+                        insert_surname = Console.ReadLine();
+                        Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
+                        insert_patronime = Console.ReadLine();
+                        cki = Console.ReadKey();
+                    } while (cki.KeyChar != '1' | cki.KeyChar != '2' | cki.KeyChar != '3');
+
+                    switch (cki.KeyChar)
+                    {
+                        case '1':
+                            break;
+                        case '2':
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 Console.WriteLine("Yeni maşın əlavə et: ");
                 car.AddCar();
             }
@@ -82,12 +128,11 @@ namespace Police_FinesForCars
 
             Owner owner = new Owner();
             Document xdocument = new Document(person);
-            Console.WriteLine(owner.MyDocuments.Length);
-            owner.MyDocuments[owner.MyDocuments.Length] = xdocument;
             //Console.WriteLine(owner.MyDocuments.Length);
-            //owner.GetMyCars()[owner.GetMyCars().Length - 1] = car;
-            //owner.GetMyFines()[owner.GetMyFines().Length - 1] = fines;
-            Console.WriteLine(value: owner);
+            owner.MyDocuments[owner.MyDocuments.Length] = xdocument;
+            //owner.MyDocuments = new Document[] { };
+            owner.MyCars[owner.MyDocuments.Length] = new Cars();
+            owner.MyFines[owner.MyDocuments.Length] = new Fines();
             owners.Add(owner);
 
             Console.ReadKey();

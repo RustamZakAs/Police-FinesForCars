@@ -76,6 +76,30 @@ namespace Police_FinesForCars
                 ENG = "Show         "
             };
             dictionary.Add("showall", lang5);
+
+            RZLanguage lang6 = new RZLanguage
+            {
+                RUS = "Введите имя      ",
+                AZE = "Adını daxil edin ",
+                ENG = "İnsert name      "
+            };
+            dictionary.Add("insertname", lang6);
+
+            RZLanguage lang7 = new RZLanguage
+            {
+                RUS = "Введите фамилию     ",
+                AZE = "Soyadını daxil edin ",
+                ENG = "İnsert surname      "
+            };
+            dictionary.Add("insertsurname", lang7);
+
+            RZLanguage lang8 = new RZLanguage
+            {
+                RUS = "Введите отчество     ",
+                AZE = "Ata adını daxil edin ",
+                ENG = "İnsert patronime     "
+            };
+            dictionary.Add("insertpatronime", lang8);
         }
     }
 }
