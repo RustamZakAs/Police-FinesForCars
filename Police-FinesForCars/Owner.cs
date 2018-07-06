@@ -10,16 +10,14 @@ namespace Police_FinesForCars
     class Owner
     {
         [DataMember]
-        public Document[] MyDocuments { get; set; }
+        public List<Document> MyDocuments = new List<Document> { };
         [DataMember]
-        public Cars[] MyCars { get; set; }
+        public List<Cars> MyCars = new List<Cars> { };
         [DataMember]
-        public Fines[] MyFines { get; set; }
+        public List<Fines> MyFines = new List<Fines> { };
         public Owner()
         {
-            MyDocuments = new Document[] { };
-            MyCars = new Cars[] { };
-            MyFines = new Fines[] { };
+
         }
         
         public override string ToString()

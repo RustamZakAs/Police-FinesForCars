@@ -17,13 +17,16 @@ namespace Police_FinesForCars
 
         public static Dictionary<string, RZLanguage> dictionary = new Dictionary<string, RZLanguage>();
         public static RZLanguage Lanl = new RZLanguage();
+
+        
         
         public static Person person = new Person();
-        public static Document document = new Document();
+        //public static Document document = new Document();
         public static Fines fines = new Fines();
         public static RegistrationMark docRegKod = new RegistrationMark();
         public static Cars car = new Cars();
 
+        public static Owner owner = new Owner();
         public static List<Owner> owners = new List<Owner>();
 
         //static int a = 6;
@@ -51,94 +54,100 @@ namespace Police_FinesForCars
             Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
 
             ConsoleKeyInfo cki = Console.ReadKey();
-            if (cki.KeyChar == '1')
+
+            switch (cki.KeyChar)
             {
-                Console.WriteLine("Yeni şəxs əlavə et: ");
-                person.AddPerson();
-                Person per = new Person();
-                per = person;
-                document.Add(per);
-                Console.WriteLine(per);
-            }
-            else if (cki.KeyChar == '2')
-            {
-                if (owners.Count == 0)
-                {
+                case '1':
                     Console.WriteLine("Yeni şəxs əlavə et: ");
                     person.AddPerson();
-                    Person per = new Person();
-                    per = person;
-                    document.Add(per);
-                    Console.WriteLine(per);
-                }
-                else
-                {
-                    string insert_name;
-                    string insert_surname;
-                    string insert_patronime;
 
-                    do
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
-                        insert_name = Console.ReadLine();
-                        Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
-                        insert_surname = Console.ReadLine();
-                        Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
-                        insert_patronime = Console.ReadLine();
-                        cki = Console.ReadKey();
-                    } while (cki.KeyChar != '1' | cki.KeyChar != '2' | cki.KeyChar != '3');
+                    //Document document = new Document(person);// document.Add(person);
 
-                    switch (cki.KeyChar)
+                    owner.MyDocuments.Add(new Document { Name = person.Name,
+                                                         Surname = person.Surname,
+                                                         Patronime = person.Patronime,
+                                                         PlaceOfBirth = person.PlaceOfBirth});
+
+                    owners.Add(owner);
+
+                    Console.WriteLine(person);
+
+                    if (owners.Count > 0)
+                        SaveAll(owners, "people");
+                    owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                    //owner.MyDocuments[owner.MyDocuments.Length] = xdocument;
+                    break;
+                case '2':
+                    if (owners.Count == 0)
                     {
-                        case '1':
-                            break;
-                        case '2':
-                            break;
-                        default:
-                            break;
+                        goto case '1';
                     }
-                }
+                    else
+                    {
+                        string insert_name;
+                        string insert_surname;
+                        string insert_patronime;
 
-                Console.WriteLine("Yeni maşın əlavə et: ");
-                car.AddCar();
-            }
-            else if (cki.KeyChar == '3')
-            {
-                Console.WriteLine("Yeni sənəd əlavə et: ");
-                Console.WriteLine("Sənən növünü qeyd edin: ");
-                document.DocType = Console.ReadLine();
-                Console.WriteLine("Sənədin seriyasını qeyd edin: ");
-                docRegKod.Seriya = Console.ReadLine();
-                Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
-                docRegKod.Number = Console.ReadLine();
-            }
-            else if (cki.KeyChar == '4')
-            {
-                Console.WriteLine("Yeni cərimə əlavə et: ");
-            }
-            else if (cki.KeyChar == '5')
-            {
-                Console.WriteLine("Hamısına baxma: ");
-                owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
-                Console.WriteLine(owners);
-                Console.ReadKey();
-            }
-            else MainMenyu();
+                        do
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
+                            insert_name = Console.ReadLine();
+                            Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
+                            insert_surname = Console.ReadLine();
+                            Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
+                            insert_patronime = Console.ReadLine();
+                            cki = Console.ReadKey();
+                        } while (cki.KeyChar != '1' | cki.KeyChar != '2' | cki.KeyChar != '3');
 
-            Owner owner = new Owner();
-            Document xdocument = new Document(person);
+                        switch (cki.KeyChar)
+                        {
+                            case '1':
+                                break;
+                            case '2':
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    Console.WriteLine("Yeni maşın əlavə et: ");
+                    car.AddCar();
+                    break;
+                case '3':
+                    Console.WriteLine("Yeni sənəd əlavə et: ");
+                    Console.WriteLine("Sənən növünü qeyd edin: ");
+                    //document.DocType = Console.ReadLine();
+                    Console.WriteLine("Sənədin seriyasını qeyd edin: ");
+                    docRegKod.Seriya = Console.ReadLine();
+                    Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
+                    docRegKod.Number = Console.ReadLine();
+                    break;
+                case '4':
+                    Console.WriteLine("Yeni cərimə əlavə et: ");
+
+                    //owner.MyFines[owner.MyDocuments.Length] = new Fines();
+                    break;
+                case '5':
+                    Console.WriteLine("Hamısına baxma: ");
+                    owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                    Console.WriteLine(owners);
+                    Console.ReadKey();
+                    break;
+                default:
+                    MainMenyu();
+                    break;
+            }
+            
             //Console.WriteLine(owner.MyDocuments.Length);
-            owner.MyDocuments[owner.MyDocuments.Length] = xdocument;
+            
             //owner.MyDocuments = new Document[] { };
-            owner.MyCars[owner.MyDocuments.Length] = new Cars();
-            owner.MyFines[owner.MyDocuments.Length] = new Fines();
-            owners.Add(owner);
+            
+            //owners.Add(owner);
 
             Console.ReadKey();
             //people.Add(person);
-            if (owners.Count > 0)
-            SaveAll(owners, "people");
+            
         }
         static public void SaveAll(object obj, string fileName)
         {
