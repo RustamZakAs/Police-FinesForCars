@@ -18,8 +18,6 @@ namespace Police_FinesForCars
         public static Dictionary<string, RZLanguage> dictionary = new Dictionary<string, RZLanguage>();
         public static RZLanguage Lanl = new RZLanguage();
 
-        
-        
         public static Person person = new Person();
         //public static Document document = new Document();
         public static Fines fines = new Fines();
@@ -63,11 +61,11 @@ namespace Police_FinesForCars
 
                     //Document document = new Document(person);// document.Add(person);
 
-                    owner.MyDocuments.Add(new Document { Name = person.Name,
-                                                         Surname = person.Surname,
-                                                         Patronime = person.Patronime,
-                                                         PlaceOfBirth = person.PlaceOfBirth});
-
+                    //owner.MyDocuments.Add(new Document { Name = person.Name,
+                    //                                     Surname = person.Surname,
+                    //                                     Patronime = person.Patronime,
+                    //                                     PlaceOfBirth = person.PlaceOfBirth});
+                    owner.MyDocuments.Add(new Document(person));
                     owners.Add(owner);
 
                     Console.WriteLine(person);
@@ -132,6 +130,27 @@ namespace Police_FinesForCars
                     Console.WriteLine("Hamısına baxma: ");
                     owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
                     Console.WriteLine(owners);
+                    foreach (var ow in owners)
+                    {
+                        foreach (var car in ow.MyCars)
+                        {
+                            Console.WriteLine(car);
+                        }
+                    }
+                    foreach (var ow in owners)
+                    {
+                        foreach (var doc in ow.MyDocuments)
+                        {
+                            Console.WriteLine(doc);
+                        }
+                    }
+                    foreach (var ow in owners)
+                    {
+                        foreach (var fin in ow.MyFines)
+                        {
+                            Console.WriteLine(fin);
+                        }
+                    }
                     Console.ReadKey();
                     break;
                 default:

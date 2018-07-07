@@ -43,7 +43,7 @@ namespace Police_FinesForCars
             //    BirtDay = bdate;
             //}
             //else 
-            BirtDay = DateTime.Parse("01.01.1900");
+            BirtDay = DateTime.Parse("01.01.1999");
             Console.WriteLine("Doğum yeri: ");
             PlaceOfBirth = Console.ReadLine();
             PlaceOfBirth = "Zaqatala şəh. C.C. 4/5";
@@ -86,6 +86,7 @@ namespace Police_FinesForCars
             Surname = doc.Surname;
             Patronime = doc.Patronime;
             BirtDay = doc.BirtDay;
+            PlaceOfBirth = doc.PlaceOfBirth;
             RegistrationKod.Seriya = doc.RegistrationKod.Seriya;
             RegistrationKod.Number = doc.RegistrationKod.Number;
         }
@@ -95,6 +96,7 @@ namespace Police_FinesForCars
             Surname = per.Surname;
             Patronime = per.Patronime;
             BirtDay = per.BirtDay;
+            PlaceOfBirth = per.PlaceOfBirth;
         }
         public void Add(Person per)
         {
@@ -102,6 +104,7 @@ namespace Police_FinesForCars
             Surname = per.Surname;
             Patronime = per.Patronime;
             BirtDay = per.BirtDay;
+            PlaceOfBirth = per.PlaceOfBirth;
         }
         public override string ToString()
         {
