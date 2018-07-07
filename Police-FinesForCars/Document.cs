@@ -29,24 +29,23 @@ namespace Police_FinesForCars
         {
             Console.WriteLine("Adı: ");
             Name = Console.ReadLine();
-            Name = "Rustam";
+            if (Name.Length == 0) Name = "Rustam";
             Console.WriteLine("Soyadı: ");
             Surname = Console.ReadLine();
-            Surname = "Zak";
+            if (Surname.Length == 0) Surname = "Zak";
             Console.WriteLine("Ata adı: ");
             Patronime = Console.ReadLine();
-            Patronime = "As";
+            if (Patronime.Length == 0) Patronime = "As";
             Console.WriteLine("Doğum tarixi: ");
-            //string birt = Console.ReadLine();
-            //if (DateTime.TryParse(birt, out DateTime bdate))
-            //{
-            //    BirtDay = bdate;
-            //}
-            //else 
-            BirtDay = DateTime.Parse("01.01.1999");
+            string birt = Console.ReadLine();
+            if (DateTime.TryParse(birt, out DateTime bdate))
+            {
+                BirtDay = bdate;
+            }
+            else BirtDay = DateTime.Parse("01.01.1900");
             Console.WriteLine("Doğum yeri: ");
             PlaceOfBirth = Console.ReadLine();
-            PlaceOfBirth = "Zaqatala şəh. C.C. 4/5";
+            if (PlaceOfBirth.Length == 0) PlaceOfBirth = "Zaqatala şəh. C.C. 4/5";
         }
     }
     [DataContract]
@@ -108,7 +107,7 @@ namespace Police_FinesForCars
         }
         public override string ToString()
         {
-            return $"{DocType} {RegistrationKod}";
+            return $"{Name} {Surname} {Patronime} {BirtDay} {PlaceOfBirth} {DocType} {RegistrationKod}";
         }
     }
 }

@@ -60,13 +60,16 @@ namespace Police_FinesForCars
             Year = int.Parse(Console.ReadLine());
             Console.WriteLine("Qapıların sayı: ");
             Doors = int.Parse(Console.ReadLine());
-            Console.WriteLine("Qapıların sayı: ");
+            Console.WriteLine("Oturacaqların sayı: ");
             Seats = int.Parse(Console.ReadLine());
-            Console.WriteLine("Qapıların sayı: ");
+            Console.WriteLine("Kuzanın nömrəsi: ");
             BodyNumber = Console.ReadLine();
-            Console.WriteLine("Qapıların sayı: ");
+            Console.WriteLine("Motorun nömrəsi: ");
             EngineNumber = Console.ReadLine();
         }
-
+        public override string ToString()
+        {
+            return $"{ Model } { Marka } { Make } { CarType } { Year } { Doors } { Seats } { BodyNumber } { EngineNumber }";
+        }
     }
 }

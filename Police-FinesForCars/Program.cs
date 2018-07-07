@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
+using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -45,128 +45,153 @@ namespace Police_FinesForCars
             Console.OutputEncoding = Encoding.Unicode;
             Console.InputEncoding  = Encoding.Unicode;
 
-            Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"4. {dictionary["newfine"].RetLang(staticLanguage)} ");
-            Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
-
-            ConsoleKeyInfo cki = Console.ReadKey();
-
-            switch (cki.KeyChar)
+            do
             {
-                case '1':
-                    Console.WriteLine("Yeni şəxs əlavə et: ");
-                    person.AddPerson();
+                Console.Clear();
+                Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["newfine"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"6. {dictionary["exit"].RetLang(staticLanguage)} ");
 
-                    //Document document = new Document(person);// document.Add(person);
+                ConsoleKeyInfo cki = Console.ReadKey();
 
-                    //owner.MyDocuments.Add(new Document { Name = person.Name,
-                    //                                     Surname = person.Surname,
-                    //                                     Patronime = person.Patronime,
-                    //                                     PlaceOfBirth = person.PlaceOfBirth});
-                    owner.MyDocuments.Add(new Document(person));
-                    owners.Add(owner);
 
-                    Console.WriteLine(person);
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        Console.WriteLine("Yeni şəxs əlavə et: ");
+                        person.AddPerson();
 
-                    if (owners.Count > 0)
-                        SaveAll(owners, "people");
-                    owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
-                    //owner.MyDocuments[owner.MyDocuments.Length] = xdocument;
-                    break;
-                case '2':
-                    if (owners.Count == 0)
-                    {
-                        goto case '1';
-                    }
-                    else
-                    {
-                        string insert_name;
-                        string insert_surname;
-                        string insert_patronime;
+                        owner.MyDocuments.Add(new Document(person));
+                        owners.Add(owner);
 
-                        do
+                        Console.WriteLine(person);
+
+                        if (owners.Count > 0)
+                            SaveAll(owners, "people");
+                        owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                        break;
+                    case '2':
+                        if (owners.Count == 0)
                         {
-                            Console.Clear();
-                            Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
-                            insert_name = Console.ReadLine();
-                            Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
-                            insert_surname = Console.ReadLine();
-                            Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
-                            insert_patronime = Console.ReadLine();
-                            cki = Console.ReadKey();
-                        } while (cki.KeyChar != '1' | cki.KeyChar != '2' | cki.KeyChar != '3');
-
-                        switch (cki.KeyChar)
-                        {
-                            case '1':
-                                break;
-                            case '2':
-                                break;
-                            default:
-                                break;
+                            goto case '1';
                         }
-                    }
-
-                    Console.WriteLine("Yeni maşın əlavə et: ");
-                    car.AddCar();
-                    break;
-                case '3':
-                    Console.WriteLine("Yeni sənəd əlavə et: ");
-                    Console.WriteLine("Sənən növünü qeyd edin: ");
-                    //document.DocType = Console.ReadLine();
-                    Console.WriteLine("Sənədin seriyasını qeyd edin: ");
-                    docRegKod.Seriya = Console.ReadLine();
-                    Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
-                    docRegKod.Number = Console.ReadLine();
-                    break;
-                case '4':
-                    Console.WriteLine("Yeni cərimə əlavə et: ");
-
-                    //owner.MyFines[owner.MyDocuments.Length] = new Fines();
-                    break;
-                case '5':
-                    Console.WriteLine("Hamısına baxma: ");
-                    owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
-                    Console.WriteLine(owners);
-                    foreach (var ow in owners)
-                    {
-                        foreach (var car in ow.MyCars)
+                        else
                         {
-                            Console.WriteLine(car);
-                        }
-                    }
-                    foreach (var ow in owners)
-                    {
-                        foreach (var doc in ow.MyDocuments)
-                        {
-                            Console.WriteLine(doc);
-                        }
-                    }
-                    foreach (var ow in owners)
-                    {
-                        foreach (var fin in ow.MyFines)
-                        {
-                            Console.WriteLine(fin);
-                        }
-                    }
-                    Console.ReadKey();
-                    break;
-                default:
-                    MainMenyu();
-                    break;
-            }
-            
-            //Console.WriteLine(owner.MyDocuments.Length);
-            
-            //owner.MyDocuments = new Document[] { };
-            
-            //owners.Add(owner);
+                            string insert_name = "";
+                            string insert_surname = "";
+                            string insert_patronime = "";
+                            bool x_exit = true;
+                            do
+                            {
+                                Console.Clear();
+                                Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
+                                Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
+                                Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
+                                Console.WriteLine($"4. {dictionary["search"].RetLang(staticLanguage)} ");
+                                Console.WriteLine($"5. {dictionary["exit"].RetLang(staticLanguage)} ");
+                                cki = Console.ReadKey();
 
-            Console.ReadKey();
-            //people.Add(person);
+                                switch (cki.KeyChar)
+                                {
+                                    case '1':
+                                        Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
+                                        insert_name = Console.ReadLine();
+                                        break;
+                                    case '2':
+                                        Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
+                                        insert_surname = Console.ReadLine();
+                                        break;
+                                    case '3':
+                                        Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
+                                        insert_patronime = Console.ReadLine();
+                                        break;
+                                    case '4':
+                                        int i = 0;
+                                        for (; i < owners.Count; i++)
+                                        {
+                                            foreach (var md in owners[i].MyDocuments)
+                                            {
+                                                if (md.Name == insert_name)
+                                                {
+                                                    int xxx = md.Name.IndexOf(insert_name);
+                                                    //md.Name.IndexOf(insert_name)
+                                                    //md.Surname.IndexOf(insert_surname) 
+                                                    Console.WriteLine(md);
+                                                    car.AddCar();
+                                                    Console.WriteLine(car);
+                                                    owners[i].MyCars.Add(car);
+
+                                                    if (owners.Count > 0)
+                                                        SaveAll(owners, "people");
+                                                    owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+
+                                                    foreach (var item in owners[i].MyCars)
+                                                    {
+                                                        Console.WriteLine(item);
+                                                    }
+                                                    Console.ReadKey();
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case '5':
+                                        x_exit = false;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } while (x_exit);
+                        }
+                        break;
+                    case '3':
+                        Console.WriteLine("Yeni sənəd əlavə et: ");
+                        Console.WriteLine("Sənən növünü qeyd edin: ");
+                        //document.DocType = Console.ReadLine();
+                        Console.WriteLine("Sənədin seriyasını qeyd edin: ");
+                        docRegKod.Seriya = Console.ReadLine();
+                        Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
+                        docRegKod.Number = Console.ReadLine();
+                        break;
+                    case '4':
+                        Console.WriteLine("Yeni cərimə əlavə et: ");
+
+                        break;
+                    case '5':
+                        Console.WriteLine("Hamısına baxma: ");
+                        owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                        Console.WriteLine(owners);
+                        foreach (var ow in owners)
+                        {
+                            foreach (var doc in ow.MyDocuments)
+                            {
+                                Console.WriteLine($"-+{ doc }");
+                            }
+                            foreach (var car in ow.MyCars)
+                            {
+                                Console.WriteLine($"------{ car }");
+                            }
+                            foreach (var fin in ow.MyFines)
+                            {
+                                Console.WriteLine($"---+++{ fin }");
+                            }
+                        }
+                        Console.ReadKey();
+                        break;
+                    case '6':
+                        if (owners.Count > 0)
+                            SaveAll(owners, "people");
+                        Environment.Exit(1);
+                        break;
+                    default:
+                        MainMenyu();
+                        break;
+                }
             
+                Console.ReadKey();
+            } while (true);
         }
         static public void SaveAll(object obj, string fileName)
         {
