@@ -81,10 +81,10 @@ namespace Police_FinesForCars
 
             RZLanguage lang5 = new RZLanguage
             {
-                RUS = "Просмотреть  ",
-                AZE = "Baxış        ",
-                ENG = "Show         ",
-                KOR = "보기"
+                RUS = "Просмотреть все ",
+                AZE = "Hamısına baxmaq ",
+                ENG = "Show all     ",
+                KOR = "모두 보이기"
             };
             dictionary.Add("showall", lang5);
 
@@ -204,6 +204,105 @@ namespace Police_FinesForCars
                 KOR = "유료"
             };
             dictionary.Add("protpaid", lang18);
+
+            RZLanguage lang19 = new RZLanguage
+            {
+                RUS = "Удалить персону ",
+                AZE = "Şəxsi sil ",
+                ENG = "Delete person",
+                KOR = "사람 삭제"
+            };
+            dictionary.Add("delper", lang19);
+
+            RZLanguage lang20 = new RZLanguage
+            {
+                RUS = "Изменить персональные данные ",
+                AZE = "Şəxsi məlumatı düzəliş et    ",
+                ENG = "Change person information    ",
+                KOR = "개인 데이터 편집"
+            };
+            dictionary.Add("changeper", lang20);
+
+            RZLanguage lang21 = new RZLanguage
+            {
+                RUS = "Работа с персональными данными ",
+                AZE = "Şəxsi məlumatla işlər          ",
+                ENG = "Work whis personal information ",
+                KOR = "개인 데이터 사용"
+            };
+            dictionary.Add("workperinfo", lang21);
+
+            RZLanguage lang22 = new RZLanguage
+            {
+                RUS = "Удаление информации о транспортном средстве ",
+                AZE = "Maşın üzrə məlumatın silinməsi              ",
+                ENG = "Delete car information                      ",
+                KOR = "차량 정보 삭제"
+            };
+            dictionary.Add("delcar", lang22);
+
+            RZLanguage lang23 = new RZLanguage
+            {
+                RUS = "Изменение информации о транспортном средстве ",
+                AZE = "Maşın üzrə məlumatın düzəlişi                ",
+                ENG = "Change car information                      ",
+                KOR = "차량 정보 수정"
+            };
+            dictionary.Add("changecar", lang23);
+
+            RZLanguage lang24 = new RZLanguage
+            {
+                RUS = "Введите регистрационный номер ",
+                AZE = "Sənədin qeydiyyat nömrəsini yazın            ",
+                ENG = "Insert registration code                      ",
+                KOR = "등록 번호를 입력하십시오"
+            };
+            dictionary.Add("insertregkod", lang24);
+
+            RZLanguage lang25 = new RZLanguage
+            {
+                RUS = "Введите регистрационный номер машины",
+                AZE = "Maşının qeydiyyat nömrəsini yazın            ",
+                ENG = "Insert car serial number                      ",
+                KOR = "기기 등록 번호를 입력하십시오"
+            };
+            dictionary.Add("insertcarsernum", lang25);
+
+            RZLanguage lang26 = new RZLanguage
+            {
+                RUS = "Работа с данными по машинам",
+                AZE = "Maşınlar üzrə işlər",
+                ENG = "Work whis car information ",
+                KOR = "머신 데이터로 작업하기"
+            };
+            dictionary.Add("workcarinfo", lang26);
+
+            RZLanguage lang27 = new RZLanguage
+            {
+                RUS = "Работа с документами",
+                AZE = "Sənədlər üzrə işlər",
+                ENG = "Work whis documents",
+                KOR = "문서 작업"
+            };
+            dictionary.Add("workdocinfo", lang27);
+
+            RZLanguage lang28 = new RZLanguage
+            {
+                RUS = "Работа со штрафами   ",
+                AZE = "Cərimələr üzrə işlər ",
+                ENG = "Work whis fines      ",
+                KOR = "벌금과 함께 일하십시오"
+            };
+            dictionary.Add("workfineinfo", lang28);
+
+            RZLanguage lang29 = new RZLanguage
+            {
+                RUS = "",
+                AZE = "",
+                ENG = "",
+                KOR = ""
+            };
+            dictionary.Add("", lang29);
         }
     }
 }

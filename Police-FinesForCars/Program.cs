@@ -39,6 +39,283 @@ namespace Police_FinesForCars
             
             MainMenyu();
         }
+
+        static void WorkWhisPerson()
+        {
+            do
+            {
+                Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["delper"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["changeper"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["exit"].RetLang(staticLanguage)} ");
+
+                ConsoleKeyInfo cki = Console.ReadKey();
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        person.AddPerson();
+                        owner.MyDocuments.Add(new Document(person));
+                        owners.Add(owner);
+
+                        Console.WriteLine(person);
+
+                        SaveLoad();
+                        break;
+                    case '2':
+                        Console.WriteLine(SearchOwner());
+                        break;
+                    case '3':
+                        Console.WriteLine(SearchOwner());
+                        break;
+                    case '4':
+                        MainMenyu();
+                        break;
+                    default:
+                        break;
+                }
+            } while (true);
+        }
+
+        static int SearchOwner ()
+        {
+            string insert_name = "";
+            string insert_surname = "";
+            string insert_patronime = "";
+            string insert_reg_ser = "";
+            string insert_reg_kod = "";
+            string insert_car_serial_number = "";
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["insertregkod"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"5. {dictionary["insertcarsernum"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"6. {dictionary["search"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"7. {dictionary["exit"].RetLang(staticLanguage)} ");
+                ConsoleKeyInfo cki = Console.ReadKey();
+            
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
+                        insert_name = Console.ReadLine();
+                        break;
+                    case '2':
+                        Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
+                        insert_surname = Console.ReadLine();
+                        break;
+                    case '3':
+                        Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
+                        insert_patronime = Console.ReadLine();
+                        break;
+                    case '4':
+                        Console.WriteLine($"4. {dictionary["insertregkod"].RetLang(staticLanguage)} ");
+                        Console.WriteLine("Seria");
+                        insert_reg_ser = Console.ReadLine();
+                        Console.WriteLine("Kod");
+                        insert_reg_kod = Console.ReadLine();
+                        break;
+                    case '5':
+                        Console.WriteLine($"4. {dictionary["insertcarsernum"].RetLang(staticLanguage)} ");
+                        insert_car_serial_number = Console.ReadLine();
+                        break;
+                    case '6':
+                        int xxx = SearchWhisInfo(insert_name, insert_surname, insert_patronime, insert_reg_ser, insert_reg_kod, insert_car_serial_number);
+                        if (xxx == 99999)
+                        {
+                            Console.WriteLine("Təkrar olan məlumat tapıldı! Məlumat azdır");
+                            Console.WriteLine(insert_name);
+                            Console.WriteLine(insert_surname);
+                            Console.WriteLine(insert_patronime);
+                            Console.WriteLine(insert_reg_ser);
+                            Console.WriteLine(insert_reg_kod);
+                            Console.WriteLine(insert_car_serial_number);
+                            Console.ReadKey();
+                        }
+                        else return xxx;
+                        break;
+                    //case '7': return 0;
+                }
+            } while (true);
+        }
+
+        static int SearchWhisInfo(string insert_name = "", 
+            string insert_surname = "", 
+            string insert_patronime = "", 
+            string insert_reg_ser = "", 
+            string insert_reg_kod = "", 
+            string insert_car_serial_number = "")
+        {
+            List<int> xindex = new List<int>();
+
+            for (int i = 0; i < owners.Count; i++)
+            {
+                foreach (var s in owners[i].MyDocuments)
+                {
+                    if (insert_name.Length > 0)
+                    {
+                        if (s.Name.Equals(insert_name))
+                        {
+                            xindex.Add(i);
+                        }
+                    }
+                    if (insert_surname.Length > 0)
+                    {
+                        if (s.Surname.Equals(insert_surname))
+                        {
+                            xindex.Add(i);
+                        }
+                    }
+                    if (insert_patronime.Length > 0)
+                    {
+                        if (s.Patronime.Equals(insert_patronime))
+                        {
+                            xindex.Add(i);
+                        }
+                    }
+                    if (insert_reg_ser.Length > 0)
+                    {
+                        if (s.RegistrationKod.Seriya.Equals(insert_reg_ser))
+                        {
+                            xindex.Add(i);
+                        }
+                    }
+                    if (insert_reg_kod.Length > 0)
+                    {
+                        if (s.RegistrationKod.Number.Equals(insert_reg_kod))
+                        {
+                            xindex.Add(i);
+                        }
+                    }
+                    if (insert_car_serial_number.Length > 0)
+                    {
+                        foreach (var item in s.CarSerialNumber)
+                        {
+                            if (item.Equals(insert_car_serial_number))
+                            {
+                                xindex.Add(i);
+                            }
+                        }
+                    }
+                }
+            }
+            Dictionary<int,int> xsxs = new Dictionary<int, int>();
+            int xcount = 0;
+            foreach (var xi in xindex)
+            {
+                for (int i = 0; i < xsxs.Count; i++)
+                {
+                    xcount++;
+                }
+                if (xcount == 0)
+                {
+                    xsxs.Add(xi,0);
+                    xcount = 0;
+                }
+            }
+            for (int j = 0; j < xindex.Count; j++)
+            {
+                xsxs[xindex[j]]++;
+            }
+            int maxCount = 0;
+            int indexMaxCount = 0;
+            for (int i = 0; i < xsxs.Count; i++)
+            {
+                if (xsxs[i] > maxCount)
+                {
+                    indexMaxCount = xsxs[i];
+                    maxCount = 0;
+                }
+            }
+            int replayIndex = 0;
+            for (int i = 0; i < xsxs.Count; i++)
+            {
+                if (indexMaxCount == xsxs[i])
+                {
+                    replayIndex++;
+                }
+            }
+            if (replayIndex > 1) return 99999;
+            //for (int i = 0; i < xsxs.Count; i++)
+            //{
+            //    for (int j = 0; j < xindex.Count; j++)
+            //    {
+            //        if (xsxs[i] == xindex[j]) xcount++;
+            //    }
+            //    if (xcount > maxCount)
+            //    {
+            //        maxCount = xcount;
+            //        indexMaxCount = i;
+            //    }
+            //    xcount = 0;
+            //}
+
+            //int[] rezult = new int[1] { indexMaxCount };
+
+            //int[] rezult = new int[xindex.Count == 0 ? 1 : xindex.Count];
+            //for (int i = 0; i < xindex.Count; i++)
+            //{
+            //    rezult[i] = xindex[i];
+            //}
+            //if (xindex.Count == 0) rezult[0] = 99999;
+            return indexMaxCount;
+        }
+
+        static void WorkWhisCar()
+        {
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"1. {dictionary["newcar"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["delcar"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["changecar"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["exit"].RetLang(staticLanguage)} ");
+
+                ConsoleKeyInfo cki = Console.ReadKey();
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        if (owners.Count == 0)
+                        {
+                            person.AddPerson();
+                            owner.MyDocuments.Add(new Document(person));
+                            owners.Add(owner);
+
+                            Console.WriteLine(person);
+
+                            SaveLoad();
+                        }
+                        else
+                        {
+                            int xxx = SearchOwner();
+                            Console.WriteLine(xxx);
+                            car.AddCar();
+                            owners[xxx].MyCars.Add(car);
+                        }
+                        break;
+                    case '2':
+                        Console.WriteLine(SearchOwner());
+                        break;
+                    case '3':
+                        Console.WriteLine(SearchOwner());
+                        break;
+                    case '4':
+                        MainMenyu();
+                        break;
+                    default:
+                        break;
+                }
+            } while (true);
+        }
+        static void SaveLoad()
+        {
+            if (owners.Count > 0)
+                SaveAll(owners, "people");
+            owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+        }
         static void MainMenyu ()
         {
             Console.Title = "Cərimələr";
@@ -48,103 +325,26 @@ namespace Police_FinesForCars
             do
             {
                 Console.Clear();
-                Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"4. {dictionary["newfine"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"1. {dictionary["workperinfo"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["workcarinfo"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["workdocinfo"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["workfineinfo"].RetLang(staticLanguage)} ");
+                //Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
+                //Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
+                //Console.WriteLine($"4. {dictionary["newfine"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"6. {dictionary["exit"].RetLang(staticLanguage)} ");
 
                 ConsoleKeyInfo cki = Console.ReadKey();
 
-
                 switch (cki.KeyChar)
                 {
                     case '1':
-                        Console.WriteLine("Yeni şəxs əlavə et: ");
-                        person.AddPerson();
-
-                        owner.MyDocuments.Add(new Document(person));
-                        owners.Add(owner);
-
-                        Console.WriteLine(person);
-
-                        if (owners.Count > 0)
-                            SaveAll(owners, "people");
-                        owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                        Console.Clear();
+                        WorkWhisPerson();
                         break;
                     case '2':
-                        if (owners.Count == 0)
-                        {
-                            goto case '1';
-                        }
-                        else
-                        {
-                            string insert_name = "";
-                            string insert_surname = "";
-                            string insert_patronime = "";
-                            bool x_exit = true;
-                            do
-                            {
-                                Console.Clear();
-                                Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
-                                Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
-                                Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
-                                Console.WriteLine($"4. {dictionary["search"].RetLang(staticLanguage)} ");
-                                Console.WriteLine($"5. {dictionary["exit"].RetLang(staticLanguage)} ");
-                                cki = Console.ReadKey();
-
-                                switch (cki.KeyChar)
-                                {
-                                    case '1':
-                                        Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
-                                        insert_name = Console.ReadLine();
-                                        break;
-                                    case '2':
-                                        Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
-                                        insert_surname = Console.ReadLine();
-                                        break;
-                                    case '3':
-                                        Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
-                                        insert_patronime = Console.ReadLine();
-                                        break;
-                                    case '4':
-                                        int i = 0;
-                                        for (; i < owners.Count; i++)
-                                        {
-                                            foreach (var md in owners[i].MyDocuments)
-                                            {
-                                                if (md.Name == insert_name)
-                                                {
-                                                    int xxx = md.Name.IndexOf(insert_name);
-                                                    //md.Name.IndexOf(insert_name)
-                                                    //md.Surname.IndexOf(insert_surname) 
-                                                    Console.WriteLine(md);
-                                                    car.AddCar();
-                                                    Console.WriteLine(car);
-                                                    owners[i].MyCars.Add(car);
-
-                                                    if (owners.Count > 0)
-                                                        SaveAll(owners, "people");
-                                                    owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
-
-                                                    foreach (var item in owners[i].MyCars)
-                                                    {
-                                                        Console.WriteLine(item);
-                                                    }
-                                                    Console.ReadKey();
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case '5':
-                                        x_exit = false;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } while (x_exit);
-                        }
+                        WorkWhisCar();
                         break;
                     case '3':
                         Console.WriteLine("Yeni sənəd əlavə et: ");

@@ -27,6 +27,7 @@ namespace Police_FinesForCars
         }
         public void AddPerson ()
         {
+            Console.WriteLine("Yeni şəxs əlavə et: ");
             Console.WriteLine("Adı: ");
             Name = Console.ReadLine();
             if (Name.Length == 0) Name = "Rustam";
@@ -66,6 +67,8 @@ namespace Police_FinesForCars
     {
         [DataMember]
         public string DocType { get; set; }
+        [DataMember]
+        public List<string> CarSerialNumber { get; set; }
         [DataMember]
         public RegistrationMark RegistrationKod { get; set; }
 

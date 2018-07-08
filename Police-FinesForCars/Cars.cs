@@ -10,11 +10,15 @@ namespace Police_FinesForCars
     public class Cars
     {
         [DataMember]
+        public string SerialNumber { get; set; }
+        [DataMember]
         public string Model { get; set; }
         [DataMember]
         public string Marka { get; set; }
         [DataMember]
         public string Make { get; set; }
+        [DataMember]
+        public string Color { get; set; }
         [DataMember]
         public string CarType { get; set; }    //Тип магины (Sedan Jeep)
         [DataMember]
@@ -33,25 +37,32 @@ namespace Police_FinesForCars
 
         }
 
-        public Cars(string model, string make, string carType, int year, int doors, int seats, string bodyNumber, string engineNumber)
+        public Cars(string serial_number, string model, string marka, string make, string color, string carType, int year, int doors, int seats, string bodyNumber, string engineNumber)
         {
+            SerialNumber = serial_number ?? throw new ArgumentNullException(nameof(serial_number));
             Model = model ?? throw new ArgumentNullException(nameof(model));
+            Marka = marka ?? throw new ArgumentNullException(nameof(marka));
             Make = make ?? throw new ArgumentNullException(nameof(make));
+            Color = color ?? throw new ArgumentNullException(nameof(color));
             CarType = carType ?? throw new ArgumentNullException(nameof(carType));
             Year = year;
             Doors = doors;
             Seats = seats;
-            BodyNumber = bodyNumber;
-            EngineNumber = engineNumber;
+            BodyNumber = bodyNumber ?? throw new ArgumentNullException(nameof(bodyNumber));
+            EngineNumber = engineNumber ?? throw new ArgumentNullException(nameof(engineNumber));
         }
 
         public void AddCar()
         {
             Console.WriteLine("Please Insert Car Information");
+            Console.WriteLine("Maşını nömrəsi: ");
+            SerialNumber = Console.ReadLine();
             Console.WriteLine("Model: ");
             Model = Console.ReadLine();
             Console.WriteLine("Marka: ");
             Marka = Console.ReadLine();
+            Console.WriteLine("Rəngi: ");
+            Color = Console.ReadLine();
             Console.WriteLine("İstehsalçı ölkə: ");
             Make = Console.ReadLine();
             Console.WriteLine("Növü: ");
@@ -69,7 +80,7 @@ namespace Police_FinesForCars
         }
         public override string ToString()
         {
-            return $"{ Model } { Marka } { Make } { CarType } { Year } { Doors } { Seats } { BodyNumber } { EngineNumber }";
+            return $"{ SerialNumber } { Model } { Marka } { Make } {Color} { CarType } { Year } { Doors } { Seats } { BodyNumber } { EngineNumber }";
         }
     }
 }
