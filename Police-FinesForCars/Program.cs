@@ -44,6 +44,7 @@ namespace Police_FinesForCars
         {
             do
             {
+                Console.Clear();
                 Console.WriteLine($"1. {dictionary["newper"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"2. {dictionary["delper"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"3. {dictionary["changeper"].RetLang(staticLanguage)} ");
@@ -63,6 +64,8 @@ namespace Police_FinesForCars
                         break;
                     case '2':
                         Console.WriteLine(SearchOwner());
+                        owners.RemoveAt(SearchOwner());
+                        SaveLoad();
                         break;
                     case '3':
                         Console.WriteLine(SearchOwner());
@@ -73,6 +76,41 @@ namespace Police_FinesForCars
                     default:
                         break;
                 }
+            } while (true);
+        }
+
+        static void ChangePersonInfo (int owner_index)
+        {
+            string c_name = "";
+            string c_surname = "";
+            string c_patronime = "";
+            DateTime c_birdth = DateTime.Parse("01.01.1900");
+            string c_placeofbirdth = "";
+            string c_seria = "";
+            string c_number = "";
+            string c_doctype = "";
+
+            do
+            {
+                Console.WriteLine("Change name");
+                Console.WriteLine($"{ owners[owner_index].MyDocuments }");
+                c_name = Console.ReadLine();
+                Console.WriteLine("Change surname");
+                c_surname = Console.ReadLine();
+                Console.WriteLine("Change patronime");
+                c_patronime = Console.ReadLine();
+                Console.WriteLine("Change Date of Birdth");
+                c_birdth = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Change Please of Birdth");
+                c_placeofbirdth = Console.ReadLine();
+                Console.WriteLine("Change Document seria");
+                c_seria = Console.ReadLine();
+                Console.WriteLine("Change Document serial number");
+                c_number = Console.ReadLine();
+                Console.WriteLine("Change Document type");
+                c_doctype = Console.ReadLine();
+
+
             } while (true);
         }
 
@@ -137,7 +175,9 @@ namespace Police_FinesForCars
                         }
                         else return xxx;
                         break;
-                    //case '7': return 0;
+                    case '7':
+                        WorkWhisPerson();
+                        break;
                 }
             } while (true);
         }
