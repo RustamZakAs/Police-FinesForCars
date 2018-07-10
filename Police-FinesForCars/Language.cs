@@ -297,12 +297,66 @@ namespace Police_FinesForCars
 
             RZLanguage lang29 = new RZLanguage
             {
+                RUS = "Удалить штраф",
+                AZE = "Cəriməni sil",
+                ENG = "Delete fine",
+                KOR = "패널티 삭제"
+            };
+            dictionary.Add("delfine", lang29);
+
+            RZLanguage lang30 = new RZLanguage
+            {
+                RUS = "Изменить штраф",
+                AZE = "Cərimədə düzəliş et",
+                ENG = "Change fine",
+                KOR = "페널티에 대한 정보 수정"
+            };
+            dictionary.Add("changefine", lang30);
+
+            RZLanguage lang31 = new RZLanguage
+            {
+                RUS = "Закрыть штраф",
+                AZE = "Cəriməni bağla",
+                ENG = "Close fine",
+                KOR = "페널티를 닫다"
+            };
+            dictionary.Add("closefine", lang31);
+
+            RZLanguage lang32 = new RZLanguage
+            {
                 RUS = "",
                 AZE = "",
                 ENG = "",
                 KOR = ""
             };
-            dictionary.Add("", lang29);
+            dictionary.Add("  ", lang32);
+
+            RZLanguage lang33 = new RZLanguage
+            {
+                RUS = "",
+                AZE = "",
+                ENG = "",
+                KOR = ""
+            };
+            dictionary.Add("   ", lang33);
+
+            RZLanguage lang34 = new RZLanguage
+            {
+                RUS = "",
+                AZE = "",
+                ENG = "",
+                KOR = ""
+            };
+            dictionary.Add("    ", lang34);
+
+            RZLanguage lang35 = new RZLanguage
+            {
+                RUS = "",
+                AZE = "",
+                ENG = "",
+                KOR = ""
+            };
+            dictionary.Add("", lang35);
         }
     }
 }

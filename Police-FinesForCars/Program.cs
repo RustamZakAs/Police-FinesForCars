@@ -20,7 +20,7 @@ namespace Police_FinesForCars
 
         public static Person person = new Person();
         //public static Document document = new Document();
-        public static Fines fines = new Fines();
+        public static Fines fine = new Fines();
         public static RegistrationMark docRegKod = new RegistrationMark();
         public static Cars car = new Cars();
 
@@ -40,6 +40,81 @@ namespace Police_FinesForCars
             MainMenyu();
         }
 
+        static void MainMenyu ()
+        {
+            Console.Title = "Cərimələr";
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding  = Encoding.Unicode;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"1. {dictionary["workperinfo"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["workcarinfo"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["workdocinfo"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["workfineinfo"].RetLang(staticLanguage)} ");
+                //Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"6. {dictionary["exit"].RetLang(staticLanguage)} ");
+
+                ConsoleKeyInfo cki = Console.ReadKey();
+
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        Console.Clear();
+                        WorkWhisPerson();
+                        break;
+                    case '2':
+                        WorkWhisCar();
+                        break;
+                    case '3':
+                        Console.WriteLine("Yeni sənəd əlavə et: ");
+                        Console.WriteLine("Sənən növünü qeyd edin: ");
+                        //document.DocType = Console.ReadLine();
+                        Console.WriteLine("Sənədin seriyasını qeyd edin: ");
+                        docRegKod.Seriya = Console.ReadLine();
+                        Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
+                        docRegKod.Number = Console.ReadLine();
+                        break;
+                    case '4':
+                        Console.WriteLine("Yeni cərimə əlavə et: ");
+                        WorkWhisFine();
+                        break;
+                    case '5':
+                        Console.WriteLine("Hamısına baxma: ");
+                        owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
+                        Console.WriteLine(owners);
+                        foreach (var ow in owners)
+                        {
+                            foreach (var doc in ow.MyDocuments)
+                            {
+                                Console.WriteLine($"-+{ doc }");
+                            }
+                            foreach (var car in ow.MyCars)
+                            {
+                                Console.WriteLine($"------{ car }");
+                            }
+                            foreach (var fin in ow.MyFines)
+                            {
+                                Console.WriteLine($"---+++{ fin }");
+                            }
+                        }
+                        Console.ReadKey();
+                        break;
+                    case '6':
+                        if (owners.Count > 0)
+                            SaveAll(owners, "people");
+                        Environment.Exit(1);
+                        break;
+                    default:
+                        MainMenyu();
+                        break;
+                }
+            
+                Console.ReadKey();
+            } while (true);
+        }
         static void WorkWhisPerson()
         {
             do
@@ -79,7 +154,7 @@ namespace Police_FinesForCars
             } while (true);
         }
 
-        static void ChangePersonInfo (int owner_index)
+        static void ChangePersonInfo(int owner_index)
         {
             string c_name = "";
             string c_surname = "";
@@ -109,12 +184,10 @@ namespace Police_FinesForCars
                 c_number = Console.ReadLine();
                 Console.WriteLine("Change Document type");
                 c_doctype = Console.ReadLine();
-
-
             } while (true);
         }
 
-        static int SearchOwner ()
+        static int SearchOwner()
         {
             string insert_name = "";
             string insert_surname = "";
@@ -134,7 +207,7 @@ namespace Police_FinesForCars
                 Console.WriteLine($"6. {dictionary["search"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"7. {dictionary["exit"].RetLang(staticLanguage)} ");
                 ConsoleKeyInfo cki = Console.ReadKey();
-            
+
                 switch (cki.KeyChar)
                 {
                     case '1':
@@ -182,11 +255,11 @@ namespace Police_FinesForCars
             } while (true);
         }
 
-        static int SearchWhisInfo(string insert_name = "", 
-            string insert_surname = "", 
-            string insert_patronime = "", 
-            string insert_reg_ser = "", 
-            string insert_reg_kod = "", 
+        static int SearchWhisInfo(string insert_name = "",
+            string insert_surname = "",
+            string insert_patronime = "",
+            string insert_reg_ser = "",
+            string insert_reg_kod = "",
             string insert_car_serial_number = "")
         {
             List<int> xindex = new List<int>();
@@ -242,7 +315,7 @@ namespace Police_FinesForCars
                     }
                 }
             }
-            Dictionary<int,int> xsxs = new Dictionary<int, int>();
+            Dictionary<int, int> xsxs = new Dictionary<int, int>();
             int xcount = 0;
             foreach (var xi in xindex)
             {
@@ -252,7 +325,7 @@ namespace Police_FinesForCars
                 }
                 if (xcount == 0)
                 {
-                    xsxs.Add(xi,0);
+                    xsxs.Add(xi, 0);
                     xcount = 0;
                 }
             }
@@ -350,89 +423,69 @@ namespace Police_FinesForCars
                 }
             } while (true);
         }
+
+        static void WorkWhisFine()
+        {
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"1. {dictionary["newfine"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["delfine"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"3. {dictionary["changefine"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["closefine"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"5. {dictionary["exit"].RetLang(staticLanguage)} ");
+
+                ConsoleKeyInfo cki = Console.ReadKey();
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        if (owners.Count == 0)
+                        {
+                            person.AddPerson();
+                            owner.MyDocuments.Add(new Document(person));
+                            owners.Add(owner);
+
+                            Console.WriteLine(person);
+
+                            SaveLoad();
+                        }
+                        else
+                        {
+                            int xxx = SearchOwner();
+                            Console.WriteLine(xxx);
+                            fine.AddFine();
+                            owners[xxx].MyFines.Add(fine);
+                        }
+                        break;
+                    case '2':
+                        Console.WriteLine(SearchOwner());
+                        foreach (var item in owners[SearchOwner()].MyFines)
+                        {
+                            Console.WriteLine(item);
+                        }
+                        break;
+                    case '3':
+                        Console.WriteLine(SearchOwner());
+                        break;
+                    case '4':
+                        Console.WriteLine(SearchOwner());
+                        break;
+                    case '5':
+                        MainMenyu();
+                        break;
+                    default:
+                        break;
+                }
+            } while (true);
+        }
+
         static void SaveLoad()
         {
             if (owners.Count > 0)
                 SaveAll(owners, "people");
             owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
         }
-        static void MainMenyu ()
-        {
-            Console.Title = "Cərimələr";
-            Console.OutputEncoding = Encoding.Unicode;
-            Console.InputEncoding  = Encoding.Unicode;
 
-            do
-            {
-                Console.Clear();
-                Console.WriteLine($"1. {dictionary["workperinfo"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"2. {dictionary["workcarinfo"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"3. {dictionary["workdocinfo"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"4. {dictionary["workfineinfo"].RetLang(staticLanguage)} ");
-                //Console.WriteLine($"2. {dictionary["newcar"].RetLang(staticLanguage)} ");
-                //Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
-                //Console.WriteLine($"4. {dictionary["newfine"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"6. {dictionary["exit"].RetLang(staticLanguage)} ");
-
-                ConsoleKeyInfo cki = Console.ReadKey();
-
-                switch (cki.KeyChar)
-                {
-                    case '1':
-                        Console.Clear();
-                        WorkWhisPerson();
-                        break;
-                    case '2':
-                        WorkWhisCar();
-                        break;
-                    case '3':
-                        Console.WriteLine("Yeni sənəd əlavə et: ");
-                        Console.WriteLine("Sənən növünü qeyd edin: ");
-                        //document.DocType = Console.ReadLine();
-                        Console.WriteLine("Sənədin seriyasını qeyd edin: ");
-                        docRegKod.Seriya = Console.ReadLine();
-                        Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
-                        docRegKod.Number = Console.ReadLine();
-                        break;
-                    case '4':
-                        Console.WriteLine("Yeni cərimə əlavə et: ");
-
-                        break;
-                    case '5':
-                        Console.WriteLine("Hamısına baxma: ");
-                        owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
-                        Console.WriteLine(owners);
-                        foreach (var ow in owners)
-                        {
-                            foreach (var doc in ow.MyDocuments)
-                            {
-                                Console.WriteLine($"-+{ doc }");
-                            }
-                            foreach (var car in ow.MyCars)
-                            {
-                                Console.WriteLine($"------{ car }");
-                            }
-                            foreach (var fin in ow.MyFines)
-                            {
-                                Console.WriteLine($"---+++{ fin }");
-                            }
-                        }
-                        Console.ReadKey();
-                        break;
-                    case '6':
-                        if (owners.Count > 0)
-                            SaveAll(owners, "people");
-                        Environment.Exit(1);
-                        break;
-                    default:
-                        MainMenyu();
-                        break;
-                }
-            
-                Console.ReadKey();
-            } while (true);
-        }
         static public void SaveAll(object obj, string fileName)
         {
             if (File.Exists($"{fileName}.json"))
@@ -446,6 +499,7 @@ namespace Police_FinesForCars
                 jsonFormatter.WriteObject(fs, obj);
             }
         }
+
         static public object ReadAll(object objectType, string fileName)
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(objectType.GetType());
