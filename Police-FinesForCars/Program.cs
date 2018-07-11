@@ -27,13 +27,8 @@ namespace Police_FinesForCars
         public static Owner owner = new Owner();
         public static List<Owner> owners = new List<Owner>();
 
-        //static int a = 6;
-
         static void Main(string[] args)
         {
-            //int a = 5;
-            //Console.WriteLine($"{Program.a} and {a}");
-
             Lanl.CreateDictionary(ref dictionary);
             owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
             
@@ -85,17 +80,18 @@ namespace Police_FinesForCars
                         Console.WriteLine("Hamısına baxma: ");
                         owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
                         Console.WriteLine(owners);
-                        foreach (var ow in owners)
+                        for (int i = 0; i < owners.Count; i++)
                         {
-                            foreach (var doc in ow.MyDocuments)
+                            Console.Write($"+{ i }+");
+                            foreach (var doc in owners[i].MyDocuments)
                             {
                                 Console.WriteLine($"-+{ doc }");
                             }
-                            foreach (var car in ow.MyCars)
+                            foreach (var car in owners[i].MyCars)
                             {
                                 Console.WriteLine($"------{ car }");
                             }
-                            foreach (var fin in ow.MyFines)
+                            foreach (var fin in owners[i].MyFines)
                             {
                                 Console.WriteLine($"---+++{ fin }");
                             }
@@ -131,6 +127,14 @@ namespace Police_FinesForCars
                     case '1':
                         person.AddPerson();
                         owner.MyDocuments.Add(new Document(person));
+                        if (SearchWhisInfo(
+                            person.Name,
+                            person.Surname, 
+                            person.Patronime,person.BirtDay,"","","") == 99999
+                            )
+                        {
+                            Console.WriteLine("");
+                        }
                         owners.Add(owner);
 
                         Console.WriteLine(person);
@@ -138,8 +142,9 @@ namespace Police_FinesForCars
                         SaveLoad();
                         break;
                     case '2':
-                        Console.WriteLine(SearchOwner());
-                        owners.RemoveAt(SearchOwner());
+                        int temp = SearchOwner();
+                        Console.WriteLine(temp);
+                        owners.RemoveAt(temp);
                         SaveLoad();
                         break;
                     case '3':
@@ -159,7 +164,7 @@ namespace Police_FinesForCars
             string c_name = "";
             string c_surname = "";
             string c_patronime = "";
-            DateTime c_birdth = DateTime.Parse("01.01.1900");
+            DateTime c_birdth = default(DateTime);
             string c_placeofbirdth = "";
             string c_seria = "";
             string c_number = "";
@@ -192,6 +197,7 @@ namespace Police_FinesForCars
             string insert_name = "";
             string insert_surname = "";
             string insert_patronime = "";
+            DateTime insert_dateofbirdth = default(DateTime);
             string insert_reg_ser = "";
             string insert_reg_kod = "";
             string insert_car_serial_number = "";
@@ -202,10 +208,11 @@ namespace Police_FinesForCars
                 Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"4. {dictionary["insertregkod"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"5. {dictionary["insertcarsernum"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"6. {dictionary["search"].RetLang(staticLanguage)} ");
-                Console.WriteLine($"7. {dictionary["exit"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"4. {dictionary["insertdateofbirdth"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"5. {dictionary["insertregkod"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"6. {dictionary["insertcarsernum"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"7. {dictionary["search"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"8. {dictionary["exit"].RetLang(staticLanguage)} ");
                 ConsoleKeyInfo cki = Console.ReadKey();
 
                 switch (cki.KeyChar)
@@ -223,18 +230,22 @@ namespace Police_FinesForCars
                         insert_patronime = Console.ReadLine();
                         break;
                     case '4':
-                        Console.WriteLine($"4. {dictionary["insertregkod"].RetLang(staticLanguage)} ");
+                        Console.WriteLine($"4. {dictionary["insertdateofbirdth"].RetLang(staticLanguage)} ");
+                        insert_patronime = Console.ReadLine();
+                        break;
+                    case '5':
+                        Console.WriteLine($"5. {dictionary["insertregkod"].RetLang(staticLanguage)} ");
                         Console.WriteLine("Seria");
                         insert_reg_ser = Console.ReadLine();
                         Console.WriteLine("Kod");
                         insert_reg_kod = Console.ReadLine();
                         break;
-                    case '5':
-                        Console.WriteLine($"4. {dictionary["insertcarsernum"].RetLang(staticLanguage)} ");
+                    case '6':
+                        Console.WriteLine($"6. {dictionary["insertcarsernum"].RetLang(staticLanguage)} ");
                         insert_car_serial_number = Console.ReadLine();
                         break;
-                    case '6':
-                        int xxx = SearchWhisInfo(insert_name, insert_surname, insert_patronime, insert_reg_ser, insert_reg_kod, insert_car_serial_number);
+                    case '7':
+                        int xxx = SearchWhisInfo(insert_name, insert_surname, insert_patronime, insert_dateofbirdth, insert_reg_ser, insert_reg_kod, insert_car_serial_number);
                         if (xxx == 99999)
                         {
                             Console.WriteLine("Təkrar olan məlumat tapıldı! Məlumat azdır");
@@ -248,7 +259,7 @@ namespace Police_FinesForCars
                         }
                         else return xxx;
                         break;
-                    case '7':
+                    case '8':
                         WorkWhisPerson();
                         break;
                 }
@@ -258,6 +269,7 @@ namespace Police_FinesForCars
         static int SearchWhisInfo(string insert_name = "",
             string insert_surname = "",
             string insert_patronime = "",
+            DateTime insert_dateofbirdth = default(DateTime),
             string insert_reg_ser = "",
             string insert_reg_kod = "",
             string insert_car_serial_number = "")
@@ -316,42 +328,45 @@ namespace Police_FinesForCars
                 }
             }
             Dictionary<int, int> xsxs = new Dictionary<int, int>();
-            int xcount = 0;
-            foreach (var xi in xindex)
+            for (int r = 0; r < xindex.Count; r++)
             {
-                for (int i = 0; i < xsxs.Count; i++)
+                if (xsxs.ContainsKey(xindex[r]))
                 {
-                    xcount++;
+                    xsxs[xindex[r]]++;
                 }
-                if (xcount == 0)
+                else
                 {
-                    xsxs.Add(xi, 0);
-                    xcount = 0;
+                    xsxs.Add(xindex[r], 1);
                 }
             }
-            for (int j = 0; j < xindex.Count; j++)
+
+            for (int i = 0; i < xsxs.Count; i++)
             {
-                xsxs[xindex[j]]++;
+                int LastCount = xsxs.Keys.ElementAt(i);
+                int result = xsxs.Values.Count(x => x == LastCount);
+                if (result > 1) return 99999;
             }
-            int maxCount = 0;
+            
+            //int maxCount = 0;
             int indexMaxCount = 0;
-            for (int i = 0; i < xsxs.Count; i++)
-            {
-                if (xsxs[i] > maxCount)
-                {
-                    indexMaxCount = xsxs[i];
-                    maxCount = 0;
-                }
-            }
-            int replayIndex = 0;
-            for (int i = 0; i < xsxs.Count; i++)
-            {
-                if (indexMaxCount == xsxs[i])
-                {
-                    replayIndex++;
-                }
-            }
-            if (replayIndex > 1) return 99999;
+            //for (int i = 0; i < xsxs.Count; i++)
+            //{
+            //    int LastCount = xsxs.Keys.ElementAt(i);
+            //    if (xsxs[xindex[i]] > maxCount)
+            //    {
+            //        indexMaxCount = i;
+            //        maxCount = 0;
+            //    }
+            //}
+            //int replayIndex = 0;
+            //for (int i = 0; i < xsxs.Count; i++)
+            //{
+            //    if (indexMaxCount == xsxs[i])
+            //    {
+            //        replayIndex++;
+            //    }
+            //}
+            //if (replayIndex > 1) return 99999;
             //for (int i = 0; i < xsxs.Count; i++)
             //{
             //    for (int j = 0; j < xindex.Count; j++)

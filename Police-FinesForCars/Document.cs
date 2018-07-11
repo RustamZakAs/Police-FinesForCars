@@ -43,7 +43,7 @@ namespace Police_FinesForCars
             {
                 BirtDay = bdate;
             }
-            else BirtDay = DateTime.Parse("01.01.1900");
+            else BirtDay = default(DateTime);
             Console.WriteLine("Doğum yeri: ");
             PlaceOfBirth = Console.ReadLine();
             if (PlaceOfBirth.Length == 0) PlaceOfBirth = "Zaqatala şəh. C.C. 4/5";

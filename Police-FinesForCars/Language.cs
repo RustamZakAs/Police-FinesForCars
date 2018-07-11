@@ -324,12 +324,12 @@ namespace Police_FinesForCars
 
             RZLanguage lang32 = new RZLanguage
             {
-                RUS = "",
-                AZE = "",
-                ENG = "",
-                KOR = ""
+                RUS = "Введите дату рождения",
+                AZE = "Doğum tarixini daxil edin",
+                ENG = "Insert date of birdth",
+                KOR = "생년월일을 입력하십시오"
             };
-            dictionary.Add("  ", lang32);
+            dictionary.Add("insertdateofbirdth", lang32);
 
             RZLanguage lang33 = new RZLanguage
             {
