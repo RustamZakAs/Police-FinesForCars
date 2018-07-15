@@ -9,48 +9,7 @@ using System.Runtime.Serialization;
 namespace Police_FinesForCars
 {
     [DataContract]
-    class Person
-    {
-        [DataMember]
-        public string Name { get; set; }
-        [DataMember]
-        public string Surname { get; set; }
-        [DataMember]
-        public string Patronime { get; set; }
-        [DataMember]
-        public DateTime BirtDay { get; set; }
-        [DataMember]
-        public string PlaceOfBirth{ get; set; }
-        public override string ToString()
-        {
-            return $"{Name} {Surname} {Patronime} {BirtDay} {PlaceOfBirth}";
-        }
-        public void AddPerson ()
-        {
-            Console.WriteLine("Yeni şəxs əlavə et: ");
-            Console.WriteLine("Adı: ");
-            Name = Console.ReadLine();
-            if (Name.Length == 0) Name = "Rustam";
-            Console.WriteLine("Soyadı: ");
-            Surname = Console.ReadLine();
-            if (Surname.Length == 0) Surname = "Zak";
-            Console.WriteLine("Ata adı: ");
-            Patronime = Console.ReadLine();
-            if (Patronime.Length == 0) Patronime = "As";
-            Console.WriteLine("Doğum tarixi: ");
-            string birt = Console.ReadLine();
-            if (DateTime.TryParse(birt, out DateTime bdate))
-            {
-                BirtDay = bdate;
-            }
-            else BirtDay = default(DateTime);
-            Console.WriteLine("Doğum yeri: ");
-            PlaceOfBirth = Console.ReadLine();
-            if (PlaceOfBirth.Length == 0) PlaceOfBirth = "Zaqatala şəh. C.C. 4/5";
-        }
-    }
-    [DataContract]
-    class RegistrationMark
+    public class RegistrationMark
     {
         [DataMember]
         public string Seriya { get; set; }
@@ -61,9 +20,19 @@ namespace Police_FinesForCars
         {
             return $"{Seriya} {Number}";
         }
+
+        public void Add()
+        {
+            Console.WriteLine("Please Insert Document Seria and Number");
+            Console.WriteLine("Seriya");
+            Seriya = Console.ReadLine();
+            Console.WriteLine("Number");
+            Number = Console.ReadLine();
+        }
     }
+
     [DataContract]
-    class Document : Person
+    public class Document
     {
         [DataMember]
         public string DocType { get; set; }
@@ -84,33 +53,50 @@ namespace Police_FinesForCars
 
         public Document(Document doc)
         {
-            Name = doc.Name;
-            Surname = doc.Surname;
-            Patronime = doc.Patronime;
-            BirtDay = doc.BirtDay;
-            PlaceOfBirth = doc.PlaceOfBirth;
+            //Name = doc.Name;
+            //Surname = doc.Surname;
+            //Patronime = doc.Patronime;
+            //BirtDay = doc.BirtDay;
+            //PlaceOfBirth = doc.PlaceOfBirth;
             RegistrationKod.Seriya = doc.RegistrationKod.Seriya;
             RegistrationKod.Number = doc.RegistrationKod.Number;
         }
-        public Document(Person per)
+
+        public void Add()
         {
-            Name = per.Name;
-            Surname = per.Surname;
-            Patronime = per.Patronime;
-            BirtDay = per.BirtDay;
-            PlaceOfBirth = per.PlaceOfBirth;
+            Console.WriteLine("Please Insert Document Information");
+            Console.WriteLine("Document type");
+            DocType = Console.ReadLine();
+            Console.WriteLine("Number");
+            RegistrationMark tempRM = new RegistrationMark();
+            tempRM.Add();
+            RegistrationKod = tempRM;
+            bool xreplace = true;
+            do
+            {
+                Console.WriteLine("Please Insert Car Serial Number");
+                Console.WriteLine("1. Add");
+                Console.WriteLine("2. Exit");
+                ConsoleKeyInfo cki = Console.ReadKey();
+                if (cki.Key == ConsoleKey.Escape) break;
+                switch (cki.KeyChar)
+                {
+                    case '1':
+                        CarSerialNumber.Add(Console.ReadLine());
+                        break;
+                    case '2':
+                        xreplace = false;
+                        break;
+                    default:
+                        break;
+                }
+            } while (xreplace);
+            RegistrationKod.Add();
         }
-        public void Add(Person per)
-        {
-            Name = per.Name;
-            Surname = per.Surname;
-            Patronime = per.Patronime;
-            BirtDay = per.BirtDay;
-            PlaceOfBirth = per.PlaceOfBirth;
-        }
+
         public override string ToString()
         {
-            return $"{Name} {Surname} {Patronime} {BirtDay} {PlaceOfBirth} {DocType} {RegistrationKod}";
+            return $"{DocType} {RegistrationKod}";
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Police_FinesForCars
             EngineNumber = engineNumber ?? throw new ArgumentNullException(nameof(engineNumber));
         }
 
-        public void AddCar()
+        public void Add()
         {
             Console.WriteLine("Please Insert Car Information");
             Console.WriteLine("Maşını nömrəsi: ");

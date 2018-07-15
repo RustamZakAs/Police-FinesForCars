@@ -19,7 +19,7 @@ namespace Police_FinesForCars
         public static RZLanguage Lanl = new RZLanguage();
 
         public static Person person = new Person();
-        //public static Document document = new Document();
+        public static Document document = new Document();
         public static Fines fine = new Fines();
         public static RegistrationMark docRegKod = new RegistrationMark();
         public static Cars car = new Cars();
@@ -48,12 +48,13 @@ namespace Police_FinesForCars
                 Console.WriteLine($"2. {dictionary["workcarinfo"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"3. {dictionary["workdocinfo"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"4. {dictionary["workfineinfo"].RetLang(staticLanguage)} ");
-                //Console.WriteLine($"3. {dictionary["newdoc"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"5. {dictionary["showall"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"6. {dictionary["exit"].RetLang(staticLanguage)} ");
 
-                ConsoleKeyInfo cki = Console.ReadKey();
+                Statistics statistics = new Statistics(ref owners);
 
+                ConsoleKeyInfo cki = Console.ReadKey();
+                int tempId = 99999;
                 switch (cki.KeyChar)
                 {
                     case '1':
@@ -61,12 +62,19 @@ namespace Police_FinesForCars
                         WorkWhisPerson();
                         break;
                     case '2':
-                        WorkWhisCar();
+                        Console.Clear();
+                        tempId = SearchOwner();
+                        if (tempId == 99999)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            goto case '2';
+                        }
+                        WorkWhisCar(tempId);
                         break;
                     case '3':
                         Console.WriteLine("Yeni sənəd əlavə et: ");
                         Console.WriteLine("Sənən növünü qeyd edin: ");
-                        //document.DocType = Console.ReadLine();
+                        document.DocType = Console.ReadLine();
                         Console.WriteLine("Sənədin seriyasını qeyd edin: ");
                         docRegKod.Seriya = Console.ReadLine();
                         Console.WriteLine("Sənədin nömrəsini qeyd edin: ");
@@ -77,9 +85,10 @@ namespace Police_FinesForCars
                         WorkWhisFine();
                         break;
                     case '5':
+                        Console.WriteLine();
                         Console.WriteLine("Hamısına baxma: ");
                         owners = (List<Owner>)ReadAll(new List<Owner>(), "people");
-                        Console.WriteLine(owners);
+                        //Console.WriteLine(owners);
                         for (int i = 0; i < owners.Count; i++)
                         {
                             Console.Write($"+{ i }+");
@@ -122,40 +131,59 @@ namespace Police_FinesForCars
                 Console.WriteLine($"4. {dictionary["exit"].RetLang(staticLanguage)} ");
 
                 ConsoleKeyInfo cki = Console.ReadKey();
+                int tempId = 0;
+                if (cki.Key == ConsoleKey.Escape) MainMenyu();
                 switch (cki.KeyChar)
                 {
                     case '1':
                         person.AddPerson();
-                        owner.MyDocuments.Add(new Document(person));
-                        if (SearchWhisInfo(
-                            person.Name,
-                            person.Surname, 
-                            person.Patronime,person.BirtDay,"","","") == 99999
-                            )
+                        if (Search.SearchWhisInfo(ref owners, person.Name, person.Surname,
+                            person.Patronime, person.BirtDay, "", "", "") == 99999)
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine("Yazılan məlumat artıq var");
+                            Console.ReadKey();
+                            person.AddPerson();
                         }
-                        owners.Add(owner);
+                        else
+                        {
+                            owner.Add(person);
+                            owners.Add(owner);
 
-                        Console.WriteLine(person);
-
-                        SaveLoad();
+                            Console.WriteLine("Məlumat yazıldı!");
+                            Console.WriteLine(person);
+                            Console.ReadKey();
+                        }
                         break;
                     case '2':
-                        int temp = SearchOwner();
-                        Console.WriteLine(temp);
-                        owners.RemoveAt(temp);
-                        SaveLoad();
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '2';
+                        }
+                        owners.RemoveAt(tempId);
+                        Console.WriteLine("Məlumat silindi!");
                         break;
                     case '3':
-                        Console.WriteLine(SearchOwner());
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '3';
+                        }
+                        Console.WriteLine(owners[tempId].MyDocuments);
+                        Console.WriteLine("Məlumat dəyişmək olmaz!");
                         break;
                     case '4':
                         MainMenyu();
                         break;
                     default:
+                        MainMenyu();
                         break;
                 }
+                SaveLoad();
             } while (true);
         }
 
@@ -164,7 +192,7 @@ namespace Police_FinesForCars
             string c_name = "";
             string c_surname = "";
             string c_patronime = "";
-            DateTime c_birdth = default(DateTime);
+            DateTime c_birdth = DateTime.Parse("01.01.1900");
             string c_placeofbirdth = "";
             string c_seria = "";
             string c_number = "";
@@ -197,7 +225,7 @@ namespace Police_FinesForCars
             string insert_name = "";
             string insert_surname = "";
             string insert_patronime = "";
-            DateTime insert_dateofbirdth = default(DateTime);
+            DateTime insert_dateofbirdth = DateTime.Parse("01.01.1900");
             string insert_reg_ser = "";
             string insert_reg_kod = "";
             string insert_car_serial_number = "";
@@ -205,6 +233,7 @@ namespace Police_FinesForCars
             do
             {
                 Console.Clear();
+                Console.WriteLine("Система поиска персоны по введённым данным");
                 Console.WriteLine($"1. {dictionary["insertname"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"2. {dictionary["insertsurname"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"3. {dictionary["insertpatronime"].RetLang(staticLanguage)} ");
@@ -245,7 +274,7 @@ namespace Police_FinesForCars
                         insert_car_serial_number = Console.ReadLine();
                         break;
                     case '7':
-                        int xxx = SearchWhisInfo(insert_name, insert_surname, insert_patronime, insert_dateofbirdth, insert_reg_ser, insert_reg_kod, insert_car_serial_number);
+                        int xxx = Search.SearchWhisInfo(ref owners, insert_name, insert_surname, insert_patronime, insert_dateofbirdth, insert_reg_ser, insert_reg_kod, insert_car_serial_number);
                         if (xxx == 99999)
                         {
                             Console.WriteLine("Təkrar olan məlumat tapıldı! Məlumat azdır");
@@ -266,176 +295,83 @@ namespace Police_FinesForCars
             } while (true);
         }
 
-        static int SearchWhisInfo(string insert_name = "",
-            string insert_surname = "",
-            string insert_patronime = "",
-            DateTime insert_dateofbirdth = default(DateTime),
-            string insert_reg_ser = "",
-            string insert_reg_kod = "",
-            string insert_car_serial_number = "")
-        {
-            List<int> xindex = new List<int>();
-
-            for (int i = 0; i < owners.Count; i++)
-            {
-                foreach (var s in owners[i].MyDocuments)
-                {
-                    if (insert_name.Length > 0)
-                    {
-                        if (s.Name.Equals(insert_name))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_surname.Length > 0)
-                    {
-                        if (s.Surname.Equals(insert_surname))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_patronime.Length > 0)
-                    {
-                        if (s.Patronime.Equals(insert_patronime))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_reg_ser.Length > 0)
-                    {
-                        if (s.RegistrationKod.Seriya.Equals(insert_reg_ser))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_reg_kod.Length > 0)
-                    {
-                        if (s.RegistrationKod.Number.Equals(insert_reg_kod))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_car_serial_number.Length > 0)
-                    {
-                        foreach (var item in s.CarSerialNumber)
-                        {
-                            if (item.Equals(insert_car_serial_number))
-                            {
-                                xindex.Add(i);
-                            }
-                        }
-                    }
-                }
-            }
-            Dictionary<int, int> xsxs = new Dictionary<int, int>();
-            for (int r = 0; r < xindex.Count; r++)
-            {
-                if (xsxs.ContainsKey(xindex[r]))
-                {
-                    xsxs[xindex[r]]++;
-                }
-                else
-                {
-                    xsxs.Add(xindex[r], 1);
-                }
-            }
-
-            for (int i = 0; i < xsxs.Count; i++)
-            {
-                int LastCount = xsxs.Keys.ElementAt(i);
-                int result = xsxs.Values.Count(x => x == LastCount);
-                if (result > 1) return 99999;
-            }
-            
-            //int maxCount = 0;
-            int indexMaxCount = 0;
-            //for (int i = 0; i < xsxs.Count; i++)
-            //{
-            //    int LastCount = xsxs.Keys.ElementAt(i);
-            //    if (xsxs[xindex[i]] > maxCount)
-            //    {
-            //        indexMaxCount = i;
-            //        maxCount = 0;
-            //    }
-            //}
-            //int replayIndex = 0;
-            //for (int i = 0; i < xsxs.Count; i++)
-            //{
-            //    if (indexMaxCount == xsxs[i])
-            //    {
-            //        replayIndex++;
-            //    }
-            //}
-            //if (replayIndex > 1) return 99999;
-            //for (int i = 0; i < xsxs.Count; i++)
-            //{
-            //    for (int j = 0; j < xindex.Count; j++)
-            //    {
-            //        if (xsxs[i] == xindex[j]) xcount++;
-            //    }
-            //    if (xcount > maxCount)
-            //    {
-            //        maxCount = xcount;
-            //        indexMaxCount = i;
-            //    }
-            //    xcount = 0;
-            //}
-
-            //int[] rezult = new int[1] { indexMaxCount };
-
-            //int[] rezult = new int[xindex.Count == 0 ? 1 : xindex.Count];
-            //for (int i = 0; i < xindex.Count; i++)
-            //{
-            //    rezult[i] = xindex[i];
-            //}
-            //if (xindex.Count == 0) rezult[0] = 99999;
-            return indexMaxCount;
-        }
-
-        static void WorkWhisCar()
+        static void WorkWhisCar(int personId = 99999)
         {
             do
             {
                 Console.Clear();
+
+                Console.WriteLine($"{owners[personId].MyDocuments[0]}");
+
                 Console.WriteLine($"1. {dictionary["newcar"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"2. {dictionary["delcar"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"3. {dictionary["changecar"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"4. {dictionary["exit"].RetLang(staticLanguage)} ");
 
                 ConsoleKeyInfo cki = Console.ReadKey();
+                if (cki.Key == ConsoleKey.Escape) MainMenyu();
+                int tempId = 0;
                 switch (cki.KeyChar)
                 {
                     case '1':
                         if (owners.Count == 0)
                         {
                             person.AddPerson();
-                            owner.MyDocuments.Add(new Document(person));
+                            owner.Add(person);
                             owners.Add(owner);
 
                             Console.WriteLine(person);
-
-                            SaveLoad();
                         }
                         else
                         {
-                            int xxx = SearchOwner();
-                            Console.WriteLine(xxx);
-                            car.AddCar();
-                            owners[xxx].MyCars.Add(car);
+                            tempId = SearchOwner();
+                            if (tempId == 99999 | tempId == 77777)
+                            {
+                                Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                                Console.ReadKey();
+                                goto case '1';
+                            }
+                            car.Add();
+                            owners[personId].MyCars.Add(car);
                         }
                         break;
                     case '2':
-                        Console.WriteLine(SearchOwner());
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '2';
+                        }
+                        int i = 0;
+                        for (; i < owners[tempId].MyCars.Count; i++)
+                        {
+                            Console.WriteLine($"{i} - {owners[tempId].MyCars[i]}");
+                        }
+                        Console.WriteLine("Press Car id: ");
+                        int tempCarId = int.Parse(Console.ReadLine());
+                        owners[tempId].MyCars.RemoveAt(i);
+                        Console.WriteLine("Məlumat silindi!");
                         break;
                     case '3':
-                        Console.WriteLine(SearchOwner());
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '3';
+                        }
+                        Console.WriteLine(owners[tempId].MyCars);
+                        Console.WriteLine("Məlumat dəyişmək olmaz!");
                         break;
                     case '4':
                         MainMenyu();
                         break;
                     default:
+                        MainMenyu();
                         break;
                 }
+                SaveLoad();
             } while (true);
         }
 
@@ -451,46 +387,79 @@ namespace Police_FinesForCars
                 Console.WriteLine($"5. {dictionary["exit"].RetLang(staticLanguage)} ");
 
                 ConsoleKeyInfo cki = Console.ReadKey();
+                if (cki.Key == ConsoleKey.Escape) MainMenyu();
+                int tempId = 0;
                 switch (cki.KeyChar)
                 {
                     case '1':
                         if (owners.Count == 0)
                         {
-                            person.AddPerson();
-                            owner.MyDocuments.Add(new Document(person));
-                            owners.Add(owner);
+                            tempId = SearchOwner();
+                            if (tempId == 99999 | tempId == 77777)
+                            {
+                                Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                                Console.ReadKey();
+                                goto case '1';
+                            }
 
-                            Console.WriteLine(person);
+                            Console.WriteLine(owners[tempId]);
 
-                            SaveLoad();
+                            fine.Add(tempId);
+                            //owner.Add(person);
+                            //owners.Add(owner);
                         }
                         else
                         {
-                            int xxx = SearchOwner();
-                            Console.WriteLine(xxx);
-                            fine.AddFine();
-                            owners[xxx].MyFines.Add(fine);
+                            tempId = SearchOwner();
+                            if (tempId == 99999 | tempId == 77777)
+                            {
+                                Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                                Console.ReadKey();
+                                goto case '1';
+                            }
+                            fine.Add();
+                            owners[tempId].MyFines.Add(fine);
                         }
                         break;
                     case '2':
-                        Console.WriteLine(SearchOwner());
-                        foreach (var item in owners[SearchOwner()].MyFines)
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '2';
+                        }
+                        foreach (var item in owners[tempId].MyFines)
                         {
                             Console.WriteLine(item);
                         }
                         break;
                     case '3':
-                        Console.WriteLine(SearchOwner());
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '3';
+                        }
                         break;
                     case '4':
-                        Console.WriteLine(SearchOwner());
+                        tempId = SearchOwner();
+                        if (tempId == 99999 | tempId == 77777)
+                        {
+                            Console.WriteLine("Axtarıla məlumat tapılmadı!");
+                            Console.ReadKey();
+                            goto case '4';
+                        }
                         break;
                     case '5':
                         MainMenyu();
                         break;
                     default:
+                        MainMenyu();
                         break;
                 }
+                SaveLoad();
             } while (true);
         }
 

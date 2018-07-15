@@ -7,7 +7,7 @@ using System.Text;
 namespace Police_FinesForCars
 {
     [DataContract]
-    class Owner
+    public class Owner : Person
     {
         [DataMember]
         public List<Document> MyDocuments = new List<Document> { };
@@ -15,14 +15,29 @@ namespace Police_FinesForCars
         public List<Cars> MyCars = new List<Cars> { };
         [DataMember]
         public List<Fines> MyFines = new List<Fines> { };
+
         public Owner()
         {
 
         }
-        
+
+        public Owner(Person per)
+        {
+            Add(per);
+        }
+
+        public void Add(Person per)
+        {
+            Name = per.Name;
+            Surname = per.Surname;
+            Patronime = per.Patronime;
+            BirtDay = per.BirtDay;
+            PlaceOfBirth = per.PlaceOfBirth;
+        }
+
         public override string ToString()
         {
-            return $"{MyDocuments[0].Name} {MyDocuments[0].Surname} {MyDocuments[0].Patronime}";
+            return $"{Name} {Surname} {Patronime}";
         }
     }
 }

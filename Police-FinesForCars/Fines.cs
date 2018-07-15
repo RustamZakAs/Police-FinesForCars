@@ -7,7 +7,7 @@ using System.Text;
 namespace Police_FinesForCars
 {
     [DataContract]
-    class Fines
+    public class Fines
     {
         [DataMember]
         public string ProtocolCode { get; set; }
@@ -32,7 +32,7 @@ namespace Police_FinesForCars
             close = value;
         }
 
-        public void AddFine()
+        public void Add(int personId = 99999)
         {
             Console.WriteLine("Please Enter Fine Information");
             Console.WriteLine("Enter protocol code: ");
