@@ -32,7 +32,7 @@ namespace Police_FinesForCars
                 }
             }
 
-            int left = 47, top = 0;
+            int left = 43, top = 0;
             Console.SetCursorPosition(left, top++);
             Console.WriteLine($"Персон  в базе данных - {owners.Count}");
             Console.SetCursorPosition(left, top++);
@@ -62,6 +62,5 @@ namespace Police_FinesForCars
         {
 
         }
-
     }
 }
