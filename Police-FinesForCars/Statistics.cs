@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Police_FinesForCars
 {
     public class Statistics
     {
+        private static Random random = new Random();
         private Dictionary<string, int> tempFinesTypeDic = new Dictionary<string, int>();
 
         public Statistics(ref List<Owner> owners)
@@ -43,23 +45,17 @@ namespace Police_FinesForCars
             Console.WriteLine($"Номеров в базе данных - {owners.Sum(x => x.MyDocuments.Sum(y => y.CarSerialNumber?.Count))}");
             Console.SetCursorPosition(left, top++);
             Console.WriteLine($"Штрафов в базе данных - {tempFinesTypeDic.Sum(x => x.Value)}");
-
             Console.SetCursorPosition(0, 7);
 
             foreach (var item in tempFinesTypeDic)
             {
-                Console.ForegroundColor = GetRandomConsoleColor();
+                Console.ForegroundColor = (ConsoleColor)random.Next(0, 16);
                 Console.WriteLine($"{item.Key} - {item.Value}");
-                Console.ForegroundColor = default(ConsoleColor);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.BackgroundColor = ConsoleColor.Black;
             }
+        }
 
-        }
-        private static Random _random = new Random();
-        private static ConsoleColor GetRandomConsoleColor()
-        {
-            var consoleColors = Enum.GetValues(typeof(ConsoleColor));
-            return (ConsoleColor)consoleColors.GetValue(_random.Next(consoleColors.Length));
-        }
         public void Show(ref List<Owner> owners)
         {
             for (int i = 0; i < owners.Count; i++)
@@ -96,12 +92,12 @@ namespace Police_FinesForCars
 
             Console.SetCursorPosition(0, 7);
 
-            foreach (var item in tempFinesTypeDic)
-            {
-                Console.ForegroundColor = GetRandomConsoleColor();
-                Console.WriteLine($"{item.Key} - {item.Value}");
-                Console.ForegroundColor = default(ConsoleColor);
-            }
+            //foreach (var item in tempFinesTypeDic)
+            //{
+            //    Console.ForegroundColor = GetRandomConsoleColor();
+            //    Console.WriteLine($"{item.Key} - {item.Value}");
+            //    Console.ForegroundColor = default(ConsoleColor);
+            //}
         }
     }
 }

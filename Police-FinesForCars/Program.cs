@@ -44,7 +44,7 @@ namespace Police_FinesForCars
             do
             {
                 Console.Clear();
-                Console.WriteLine("-----");
+                Console.SetCursorPosition(0, 0);
                 Console.WriteLine($"1. {dictionary["workperinfo"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"2. {dictionary["workcarinfo"].RetLang(staticLanguage)} ");
                 Console.WriteLine($"3. {dictionary["workdocinfo"].RetLang(staticLanguage)} ");
@@ -92,7 +92,7 @@ namespace Police_FinesForCars
                         //System.Console.WriteLine(owners);
                         for (int i = 0; i < owners.Count; i++)
                         {
-                            Console.WriteLine($"{i}-+{owners[i]}");
+                            Console.WriteLine($"{i}--+{owners[i]}");
                             foreach (var doc in owners[i].MyDocuments)
                             {
                                 Console.WriteLine($"----+{ doc }");
@@ -103,7 +103,7 @@ namespace Police_FinesForCars
                             }
                             foreach (var fin in owners[i].MyFines)
                             {
-                                Console.WriteLine($"--+++{ fin }");
+                                Console.WriteLine($"--+++\n{ fin }");
                             }
                         }
                         Console.ReadKey();
@@ -293,7 +293,7 @@ namespace Police_FinesForCars
                         else return xxx;
                         break;
                     case '8':
-                        //WorkWhisPerson();
+                        MainMenyu();
                         break;
                 }
                 

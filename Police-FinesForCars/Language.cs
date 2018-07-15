@@ -189,7 +189,7 @@ namespace Police_FinesForCars
 
             RZLanguage lang17 = new RZLanguage
             {
-                RUS = "Оштрафованное транспортное средство ",
+                RUS = "Транспортное средство ",
                 AZE = "Cərimələnən maşın                   ",
                 ENG = "Fine car                            ",
                 KOR = "벌금이 부과 된 차량"
