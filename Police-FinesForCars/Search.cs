@@ -7,9 +7,40 @@ namespace Police_FinesForCars
 {
     public class Search
     {
+
         public Search()
         {
 
+        }
+
+        public static int FindCount(ref List<Owner> owners, 
+                             string insert_name = "",
+                             string insert_surname = "",
+                             string insert_patronime = "",
+                             DateTime? insert_dateofbirdth = null,
+                             string insert_reg_ser = "",
+                             string insert_reg_kod = "",
+                             string insert_car_serial_number = "")
+        {
+            if (insert_dateofbirdth == null)
+            {
+                insert_dateofbirdth = new DateTime(1900, 01, 01);
+            }
+
+            var xxx = owners.Find(u => u.Name == insert_name);
+            return 0;
+
+            //return owners
+            //  //.GroupBy(l => l.Date)
+            //  .Select(g => new
+            //  {
+            //      insert_name = g.Name,
+            //      insert_surname = g.Surname,
+            //      insert_patronime = g.Patronime,
+            //      insert_dateofbirdth = g.BirtDay
+            //  }).Count();
+
+            //return owners.Count(select );
         }
 
         public Search(ref List<Owner> owners)
@@ -20,6 +51,7 @@ namespace Police_FinesForCars
         // 99999 - base in exist info those. repeat - в базе есть подобная инфа т.е. повтор
         // 77777 - base in not this info - в базе нет такой информации
         // 66666 - 
+        // index - base in exist info (1 piece) - в базе есть инфа (1 шт)
         public static int SearchWhisInfo(ref List<Owner> owners, string insert_name = "",
             string insert_surname = "",
             string insert_patronime = "",
@@ -73,51 +105,48 @@ namespace Police_FinesForCars
 
             for (int i = 0; i < owners.Count; i++)
             {
-                foreach (var ow in owners)
+                if (insert_name.Length > 0)
                 {
-                    if (insert_name.Length > 0)
+                    if (owners[i].Name.Equals(insert_name))
                     {
-                        if (ow.Name.Equals(insert_name))
+                        xindex.Add(i);
+                    }
+                }
+                if (insert_surname.Length > 0)
+                {
+                    if (owners[i].Surname.Equals(insert_surname))
+                    {
+                        xindex.Add(i);
+                    }
+                }
+                if (insert_patronime.Length > 0)
+                {
+                    if (owners[i].Patronime.Equals(insert_patronime))
+                    {
+                        xindex.Add(i);
+                    }
+                }
+                if (insert_reg_ser.Length > 0)
+                {
+                    if (owners[i].MyDocuments.Exists(x => x.RegistrationKod.Seriya == insert_reg_ser))
+                    {
+                        xindex.Add(i);
+                    }
+                }
+                if (insert_reg_kod.Length > 0)
+                {
+                    if (owners[i].MyDocuments.Exists(x => x.RegistrationKod.Number == insert_reg_kod))
+                    {
+                        xindex.Add(i);
+                    }
+                }
+                if (insert_car_serial_number.Length > 0)
+                {
+                    foreach (var owdoc in owners[i].MyDocuments)
+                    {
+                        if (owdoc.Equals(insert_car_serial_number))
                         {
                             xindex.Add(i);
-                        }
-                    }
-                    if (insert_surname.Length > 0)
-                    {
-                        if (ow.Surname.Equals(insert_surname))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_patronime.Length > 0)
-                    {
-                        if (ow.Patronime.Equals(insert_patronime))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_reg_ser.Length > 0)
-                    {
-                        if (ow.MyDocuments.Exists(x => x.RegistrationKod.Seriya == insert_reg_ser))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_reg_kod.Length > 0)
-                    {
-                        if (ow.MyDocuments.Exists(x => x.RegistrationKod.Number == insert_reg_kod))
-                        {
-                            xindex.Add(i);
-                        }
-                    }
-                    if (insert_car_serial_number.Length > 0)
-                    {
-                        foreach (var owdoc in ow.MyDocuments)
-                        {
-                            if (owdoc.Equals(insert_car_serial_number))
-                            {
-                                xindex.Add(i);
-                            }
                         }
                     }
                 }
@@ -140,6 +169,7 @@ namespace Police_FinesForCars
                 int LastCount = xsxs.Keys.ElementAt(i);
                 int result = xsxs.Values.Count(x => x == LastCount);
                 if (result > 1) return 99999;
+                if (result == 1) return xsxs.Keys.ElementAt(0);
 
                 indexMaxCount = result;
             }

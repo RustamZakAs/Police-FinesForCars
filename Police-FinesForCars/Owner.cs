@@ -21,6 +21,12 @@ namespace Police_FinesForCars
 
         }
 
+        public Owner(Owner owners)
+        {
+            Name = owners.Name;
+            Surname = owners.Surname;
+        }
+
         public Owner(Person per)
         {
             Add(per);

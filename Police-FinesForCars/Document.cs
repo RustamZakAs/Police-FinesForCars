@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Police_FinesForCars
 {
@@ -93,6 +94,21 @@ namespace Police_FinesForCars
             } while (xreplace);
             RegistrationKod.Add();
         }
+
+        public void AddSerialNumber()
+        {
+            string line = null;
+            string pattern = @"^..[0-9]-..[A-Z]-...[0-9]$";
+            Regex reg = new Regex(pattern, RegexOptions.IgnoreCase);
+
+            Console.WriteLine("Введите строку на проверку корректности:");
+            line = Console.ReadLine();
+
+            MatchCollection mc = reg.Matches(line);
+
+            Console.ReadKey();
+        }
+        
 
         public override string ToString()
         {
